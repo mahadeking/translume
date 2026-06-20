@@ -46,17 +46,36 @@ const features = [
 export default function Home() {
   return (
     <div className="min-h-screen">
-      <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
-        <Logo />
-        <nav className="flex items-center gap-2">
-          <Link href="/login" className="btn btn-ghost">
-            Sign in
-          </Link>
-          <Link href="/record" className="btn btn-primary">
-            <IconRecord width={18} height={18} />
-            Start recording
-          </Link>
-        </nav>
+      <header className="sticky top-0 z-40 border-b border-[var(--border)] glass">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3.5">
+          <Logo />
+          <nav className="hidden items-center gap-8 text-sm font-medium text-[var(--text-dim)] md:flex">
+            <a href="#features" className="transition hover:text-[var(--text)]">
+              Features
+            </a>
+            <a href="#demo" className="transition hover:text-[var(--text)]">
+              Demo
+            </a>
+            <a
+              href="https://github.com/mahadeking/translume"
+              target="_blank"
+              rel="noreferrer"
+              className="transition hover:text-[var(--text)]"
+            >
+              GitHub
+            </a>
+          </nav>
+          <div className="flex items-center gap-2">
+            <Link href="/login" className="btn btn-ghost">
+              Sign in
+            </Link>
+            <Link href="/record" className="btn btn-primary">
+              <IconRecord width={18} height={18} />
+              <span className="hidden sm:inline">Start recording</span>
+              <span className="sm:hidden">Record</span>
+            </Link>
+          </div>
+        </div>
       </header>
 
       {/* Hero */}
@@ -89,7 +108,7 @@ export default function Home() {
         </p>
 
         {/* Product preview mock */}
-        <div className="fade-up mt-16">
+        <div id="demo" className="fade-up mt-16 scroll-mt-24">
           <div className="mx-auto max-w-4xl overflow-hidden rounded-2xl border border-[var(--border-strong)] glass-strong shadow-2xl shadow-[rgba(124,108,255,0.25)]">
             <div className="flex items-center gap-2 border-b border-[var(--border)] px-4 py-3">
               <span className="h-3 w-3 rounded-full bg-[#ff5f57]" />
@@ -116,7 +135,7 @@ export default function Home() {
       </section>
 
       {/* Features */}
-      <section className="mx-auto max-w-6xl px-6 py-20">
+      <section id="features" className="mx-auto max-w-6xl px-6 py-20 scroll-mt-20">
         <h2 className="text-center text-3xl font-semibold tracking-tight">
           More than a screen recorder.{" "}
           <span className="brand-text">It&apos;s the whole conversation.</span>
