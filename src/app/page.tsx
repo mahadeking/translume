@@ -8,7 +8,6 @@ import {
   IconLink,
   IconEye,
   IconLibrary,
-  IconPlay,
 } from "@/components/icons";
 
 const features = [
@@ -100,21 +99,17 @@ export default function Home() {
                 translume.app/v/quarterly-update
               </span>
             </div>
-            <div className="relative aspect-video bg-gradient-to-br from-[#15131f] via-[#0e0c16] to-[#1a1326]">
-              <div className="absolute inset-0 grid place-items-center">
-                <span className="grid h-20 w-20 place-items-center rounded-full brand-gradient shadow-xl shadow-[rgba(124,108,255,0.6)]">
-                  <IconPlay width={34} height={34} className="text-white" />
-                </span>
-              </div>
-              {/* webcam bubble */}
-              <div className="absolute bottom-5 right-5 h-28 w-28 rounded-full border-2 border-[var(--brand)] bg-[#221a33] shadow-2xl" />
-              {/* timeline */}
-              <div className="absolute bottom-0 left-0 right-0 flex items-center gap-2 px-5 pb-4">
-                <div className="h-1.5 flex-1 rounded-full bg-white/15">
-                  <div className="h-full w-1/3 rounded-full brand-gradient" />
-                </div>
-                <span className="chip">2:14</span>
-              </div>
+            <div className="relative aspect-video bg-black">
+              {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+              <video
+                src="https://kzpjcgfjxxuiojvncvrl.supabase.co/storage/v1/object/public/recordings/demo.webm"
+                poster="https://kzpjcgfjxxuiojvncvrl.supabase.co/storage/v1/object/public/recordings/demo-poster.jpg"
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="absolute inset-0 h-full w-full object-cover"
+              />
             </div>
           </div>
         </div>
@@ -123,8 +118,8 @@ export default function Home() {
       {/* Features */}
       <section className="mx-auto max-w-6xl px-6 py-20">
         <h2 className="text-center text-3xl font-semibold tracking-tight">
-          Everything you need to record.{" "}
-          <span className="brand-text">Designed like it&apos;s 2026.</span>
+          More than a screen recorder.{" "}
+          <span className="brand-text">It&apos;s the whole conversation.</span>
         </h2>
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((f) => {
