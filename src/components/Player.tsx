@@ -166,7 +166,7 @@ export const Player = forwardRef<PlayerHandle, PlayerProps>(function Player(
       )}
 
       {/* controls */}
-      <div className="absolute inset-x-0 bottom-0 translate-y-1 bg-gradient-to-t from-black/80 via-black/40 to-transparent px-4 pb-3 pt-10 opacity-0 transition group-hover:opacity-100 group-hover:translate-y-0 data-[show=true]:opacity-100">
+      <div className="touch-visible absolute inset-x-0 bottom-0 translate-y-1 bg-gradient-to-t from-black/80 via-black/40 to-transparent px-4 pb-3 pt-10 opacity-0 transition group-hover:translate-y-0 group-hover:opacity-100 data-[show=true]:opacity-100">
         {/* timeline */}
         <div className="relative">
           <div

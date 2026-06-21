@@ -76,7 +76,7 @@ export function VideoCard({
       : rec.duration;
 
   return (
-    <div className="group card relative overflow-hidden transition hover:border-[var(--border-strong)]">
+    <div className="group card relative transition hover:border-[var(--border-strong)]">
       {onToggleSave && (
         <button
           onClick={() => onToggleSave(rec.id, !rec.saved)}
@@ -84,7 +84,7 @@ export function VideoCard({
           className={`absolute right-2 top-2 z-10 grid h-7 w-7 place-items-center rounded-lg bg-black/60 backdrop-blur transition ${
             rec.saved
               ? "text-[var(--brand-2)]"
-              : "text-white opacity-0 group-hover:opacity-100 hover:text-[var(--brand-2)]"
+              : "touch-visible text-white opacity-0 group-hover:opacity-100 hover:text-[var(--brand-2)]"
           }`}
         >
           {rec.saved ? (
@@ -94,7 +94,10 @@ export function VideoCard({
           )}
         </button>
       )}
-      <Link href={`/v/${rec.id}`} className="relative block aspect-video bg-black/40">
+      <Link
+        href={`/v/${rec.id}`}
+        className="relative block aspect-video overflow-hidden rounded-t-[15px] bg-black/40"
+      >
         {rec.thumbnail ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={rec.thumbnail} alt={rec.title} className="h-full w-full object-cover" />
@@ -140,7 +143,7 @@ export function VideoCard({
             onClick={() => setMenuOpen((v) => !v)}
             aria-label="More actions"
             data-open={menuOpen}
-            className="rounded-lg p-1.5 text-[var(--text-faint)] opacity-0 transition hover:bg-[var(--panel-strong)] hover:text-[var(--text)] group-hover:opacity-100 data-[open=true]:opacity-100"
+            className="touch-visible rounded-lg p-1.5 text-[var(--text-faint)] opacity-0 transition hover:bg-[var(--panel-strong)] hover:text-[var(--text)] group-hover:opacity-100 data-[open=true]:opacity-100"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
               <circle cx="12" cy="5" r="1.6" />

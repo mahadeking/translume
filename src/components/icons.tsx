@@ -221,3 +221,15 @@ export const IconLogout = (p: IconProps) => (
     <path d="M16 17l5-5-5-5M21 12H9" />
   </svg>
 );
+
+export const IconMenu = (p: IconProps) => (
+  <svg {...base(p)}>
+    <path d="M4 6h16M4 12h16M4 18h16" />
+  </svg>
+);
+
+export const IconClose = (p: IconProps) => (
+  <svg {...base(p)}>
+    <path d="M6 6l12 12M18 6 6 18" />
+  </svg>
+);

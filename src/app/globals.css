@@ -223,3 +223,10 @@ body {
 .menu-item:hover {
   background: var(--panel-strong);
 }
+
+/* On touch devices there's no hover, so reveal hover-only action buttons. */
+@media (hover: none), (pointer: coarse) {
+  .touch-visible {
+    opacity: 1 !important;
+  }
+}
