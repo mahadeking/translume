@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Logo } from "@/components/Logo";
 import { Player, type PlayerHandle } from "@/components/Player";
 import { ShareDialog } from "@/components/ShareDialog";
@@ -11,10 +12,12 @@ import {
   listComments,
   addComment,
   deleteComment,
+  deleteRecording,
   incrementViews,
   updateRecording,
   isCloud,
 } from "@/lib/store";
+import { currentUserId } from "@/lib/auth";
 import type { AISummary, Comment, Recording } from "@/lib/types";
 import { formatDuration, formatRelativeDate, initials } from "@/lib/format";
 import { pushRecent } from "@/lib/recent";
@@ -30,12 +33,15 @@ import {
 const QUICK_EMOJI = ["👍", "❤️", "😂", "🎉", "🤔", "👏"];
 
 export function Watch({ id }: { id: string }) {
+  const router = useRouter();
   const playerRef = useRef<PlayerHandle | null>(null);
   const [rec, setRec] = useState<Recording | null>(null);
   const [url, setUrl] = useState<string | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
   const [loading, setLoading] = useState(true);
   const [playhead, setPlayhead] = useState(0);
+  const [isOwner, setIsOwner] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   const [name, setName] = useState("You");
   const [body, setBody] = useState("");
@@ -57,6 +63,13 @@ export function Watch({ id }: { id: string }) {
       }
       setRec(r);
       if (r.ai) setAi(r.ai);
+      // You can delete a recording you own. In local mode every recording lives
+      // in your own browser, so it's always yours; in cloud mode compare owners.
+      if (!isCloud()) setIsOwner(true);
+      else {
+        const me = await currentUserId();
+        setIsOwner(!!me && r.owner === me);
+      }
       pushRecent(id);
       objectUrl = await getObjectURL(id);
       setUrl(objectUrl);
@@ -90,6 +103,19 @@ export function Watch({ id }: { id: string }) {
   async function removeComment(cid: string) {
     await deleteComment(cid);
     setComments((prev) => prev.filter((c) => c.id !== cid));
+  }
+
+  async function handleDelete() {
+    if (!rec || deleting) return;
+    if (!confirm(`Delete "${rec.title}"? This can't be undone.`)) return;
+    setDeleting(true);
+    try {
+      await deleteRecording(rec.id);
+      router.push("/library");
+    } catch {
+      setDeleting(false);
+      alert("Couldn't delete this recording. Please try again.");
+    }
   }
 
   async function generateAI() {
@@ -171,12 +197,28 @@ export function Watch({ id }: { id: string }) {
     <div className="min-h-screen">
       <header className="flex items-center justify-between px-5 py-4 sm:px-8">
         <Logo />
-        <div className="flex items-center gap-2">
-          <Link href="/library" className="btn btn-ghost">
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          <Link href="/library" className="btn btn-ghost btn-sm">
             <IconArrowLeft width={18} height={18} />
             <span className="hidden sm:inline">Library</span>
           </Link>
-          <button onClick={() => setShowShare(true)} className="btn btn-primary">
+          {isOwner && (
+            <button
+              onClick={handleDelete}
+              disabled={deleting}
+              className="btn btn-danger btn-sm"
+              aria-label="Delete recording"
+            >
+              <IconTrash width={18} height={18} />
+              <span className="hidden sm:inline">
+                {deleting ? "Deleting…" : "Delete"}
+              </span>
+            </button>
+          )}
+          <button
+            onClick={() => setShowShare(true)}
+            className="btn btn-primary btn-sm"
+          >
             <IconLink width={18} height={18} />
             Share
           </button>

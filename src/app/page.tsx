@@ -47,7 +47,7 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       <header className="sticky top-0 z-40 border-b border-[var(--border)] glass">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3.5">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3.5 sm:px-6">
           <Logo />
           <nav className="hidden items-center gap-8 text-sm font-medium text-[var(--text-dim)] md:flex">
             <a href="#features" className="transition hover:text-[var(--text)]">
@@ -65,11 +65,11 @@ export default function Home() {
               GitHub
             </a>
           </nav>
-          <div className="flex items-center gap-2">
-            <Link href="/login" className="btn btn-ghost">
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <Link href="/login" className="btn btn-ghost btn-sm">
               Sign in
             </Link>
-            <Link href="/record" className="btn btn-primary">
+            <Link href="/record" className="btn btn-primary btn-sm">
               <IconRecord width={18} height={18} />
               <span className="hidden sm:inline">Start recording</span>
               <span className="sm:hidden">Record</span>
@@ -94,12 +94,18 @@ export default function Home() {
           reply right on the timeline. A faster, far better-looking way to send a
           video message.
         </p>
-        <div className="fade-up mt-9 flex items-center justify-center gap-3">
-          <Link href="/record" className="btn btn-primary px-6 py-3 text-base">
+        <div className="fade-up mx-auto mt-9 flex max-w-md flex-col items-center justify-center gap-3 sm:max-w-none sm:flex-row">
+          <Link
+            href="/record"
+            className="btn btn-primary w-full justify-center px-6 py-3 text-base sm:w-auto"
+          >
             <IconRecord width={20} height={20} />
             Record your first Translume
           </Link>
-          <Link href="/library" className="btn btn-ghost px-6 py-3 text-base">
+          <Link
+            href="/library"
+            className="btn btn-ghost w-full justify-center px-6 py-3 text-base sm:w-auto"
+          >
             Open library
           </Link>
         </div>

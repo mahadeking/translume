@@ -31,6 +31,7 @@ function rowToRecording(r: any): Recording {
     trimStart: r.trim_start ?? undefined,
     trimEnd: r.trim_end ?? undefined,
     saved: r.saved ?? false,
+    owner: r.owner ?? undefined,
   };
 }
 

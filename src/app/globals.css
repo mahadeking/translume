@@ -143,6 +143,22 @@ body {
   background: rgba(255, 90, 120, 0.2);
 }
 
+/* Compact button on mobile (tight headers), full size from sm up. */
+.btn-sm {
+  padding: 0.42rem 0.7rem;
+  font-size: 0.82rem;
+  gap: 0.35rem;
+  border-radius: 10px;
+}
+@media (min-width: 640px) {
+  .btn-sm {
+    padding: 0.62rem 1.05rem;
+    font-size: 0.9rem;
+    gap: 0.5rem;
+    border-radius: 12px;
+  }
+}
+
 .card {
   background: var(--panel);
   border: 1px solid var(--border);

@@ -35,6 +35,7 @@ export interface Recording {
   trimStart?: number; // seconds; playback starts here
   trimEnd?: number; // seconds; playback ends here
   saved?: boolean; // bookmarked for "Watch later"
+  owner?: string; // auth user id of the creator (cloud mode only)
 }
 
 export interface Comment {
