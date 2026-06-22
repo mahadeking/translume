@@ -64,7 +64,6 @@ export function LandingMobileMenu() {
 
             <div className="my-3 border-t border-[var(--border)]" />
 
-            <Link href="/login" onClick={close} className={linkCls}>Sign in</Link>
             <Link href="/login?mode=signup" onClick={close} className={linkCls}>
               Start for free
             </Link>
