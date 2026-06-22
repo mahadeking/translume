@@ -1,7 +1,11 @@
 import { getSupabase, isCloud } from "./supabase";
 
-export async function signUp(email: string, password: string) {
-  return getSupabase().auth.signUp({ email, password });
+export async function signUp(email: string, password: string, name?: string) {
+  return getSupabase().auth.signUp({
+    email,
+    password,
+    options: name?.trim() ? { data: { full_name: name.trim() } } : undefined,
+  });
 }
 
 export async function signIn(email: string, password: string) {
