@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Logo } from "@/components/Logo";
 import { LandingNav } from "@/components/LandingNav";
+import { LandingMobileMenu } from "@/components/LandingMobileMenu";
 import {
   IconRecord,
   IconScreen,
@@ -106,7 +107,7 @@ export default function Home() {
           <Logo />
           <LandingNav />
           <div className="flex items-center gap-1.5 sm:gap-2">
-            <Link href="/login" className="btn btn-ghost btn-sm">
+            <Link href="/login" className="btn btn-ghost btn-sm hidden sm:inline-flex">
               Sign in
             </Link>
             <Link href="/record" className="btn btn-primary btn-sm">
@@ -114,6 +115,7 @@ export default function Home() {
               <span className="hidden sm:inline">Start recording</span>
               <span className="sm:hidden">Record</span>
             </Link>
+            <LandingMobileMenu />
           </div>
         </div>
       </header>
