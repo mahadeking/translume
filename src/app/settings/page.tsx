@@ -25,7 +25,6 @@ import {
 import {
   IconLogout,
   IconBell,
-  IconUsers,
   IconMail,
   IconLink,
   IconCheck,
@@ -34,6 +33,7 @@ import {
   IconBoth,
   IconTrash,
 } from "@/components/icons";
+import { WorkspaceCard } from "@/components/WorkspaceCard";
 
 type Tab =
   | "account"
@@ -178,17 +178,11 @@ function AccountTab({
   const [name, setName] = useState(metaName);
   const [savingName, setSavingName] = useState(false);
   const [nameSaved, setNameSaved] = useState(false);
-  const [inviteEmail, setInviteEmail] = useState("");
-  const [inviteCopied, setInviteCopied] = useState(false);
   const [wiping, setWiping] = useState(false);
 
   useEffect(() => {
     setName(metaName);
   }, [metaName]);
-
-  const workspace = email.includes("@")
-    ? email.split("@")[1].split(".")[0]
-    : "My workspace";
 
   async function saveName() {
     if (!hasUser) return;
@@ -198,24 +192,6 @@ function AccountTab({
     setSavingName(false);
     setNameSaved(true);
     setTimeout(() => setNameSaved(false), 2000);
-  }
-
-  function sendInvite() {
-    const link = `${window.location.origin}/login`;
-    const subject = encodeURIComponent("Join me on Translume");
-    const body = encodeURIComponent(
-      `I'm using Translume for quick screen + camera video messages. Join here: ${link}`
-    );
-    window.location.href = `mailto:${inviteEmail}?subject=${subject}&body=${body}`;
-  }
-
-  function copyInviteLink() {
-    navigator.clipboard
-      .writeText(`${window.location.origin}/login`)
-      .then(() => {
-        setInviteCopied(true);
-        setTimeout(() => setInviteCopied(false), 1500);
-      });
   }
 
   async function deleteAllData() {
@@ -281,44 +257,8 @@ function AccountTab({
         </div>
       </div>
 
-      {/* Workspace / Invite */}
-      <div className="card p-5">
-        <h2 className="text-sm font-semibold">Workspace</h2>
-        <div className="mt-3 flex items-center gap-3">
-          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[var(--panel-strong)] text-sm font-bold uppercase text-[var(--brand)]">
-            {workspace.slice(0, 1)}
-          </span>
-          <div className="min-w-0">
-            <div className="truncate text-sm font-medium capitalize">{workspace}</div>
-            <div className="text-xs text-[var(--text-faint)]">1 member · that&apos;s you</div>
-          </div>
-        </div>
-
-        <div className="mt-4 flex flex-col gap-2 sm:flex-row">
-          <input
-            type="email"
-            value={inviteEmail}
-            onChange={(e) => setInviteEmail(e.target.value)}
-            placeholder="teammate@company.com"
-            className="input"
-          />
-          <button
-            onClick={sendInvite}
-            disabled={!inviteEmail.includes("@")}
-            className="btn btn-primary shrink-0"
-          >
-            <IconUsers width={16} height={16} />
-            Invite teammate
-          </button>
-        </div>
-        <button
-          onClick={copyInviteLink}
-          className="mt-2 inline-flex items-center gap-1.5 text-xs text-[var(--text-dim)] transition hover:text-[var(--text)]"
-        >
-          {inviteCopied ? <IconCheck width={13} height={13} /> : <IconLink width={13} height={13} />}
-          {inviteCopied ? "Invite link copied" : "Copy invite link instead"}
-        </button>
-      </div>
+      {/* Workspace / Invite teammates */}
+      <WorkspaceCard />
 
       {/* Account actions */}
       <div className="card p-5">

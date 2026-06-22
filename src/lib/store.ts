@@ -76,3 +76,8 @@ export function deleteFolder(id: string): Promise<void> {
 export function setSaved(id: string, saved: boolean): Promise<void> {
   return provider().setSaved(id, saved);
 }
+
+/** Recordings shared into a team workspace (cloud only). */
+export function listWorkspaceRecordings(workspaceId: string): Promise<Recording[]> {
+  return isCloud() ? cloud.listWorkspaceRecordings(workspaceId) : Promise.resolve([]);
+}

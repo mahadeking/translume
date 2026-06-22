@@ -32,6 +32,7 @@ function rowToRecording(r: any): Recording {
     trimEnd: r.trim_end ?? undefined,
     saved: r.saved ?? false,
     owner: r.owner ?? undefined,
+    workspaceId: r.workspace_id ?? null,
   };
 }
 
@@ -95,6 +96,19 @@ export async function listRecordings(): Promise<Recording[]> {
   return (data ?? []).map(rowToRecording);
 }
 
+export async function listWorkspaceRecordings(
+  workspaceId: string
+): Promise<Recording[]> {
+  const supabase = getSupabase();
+  const { data, error } = await supabase
+    .from("recordings")
+    .select("*")
+    .eq("workspace_id", workspaceId)
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return (data ?? []).map(rowToRecording);
+}
+
 export async function getRecording(id: string): Promise<Recording | undefined> {
   const supabase = getSupabase();
   const { data, error } = await supabase
@@ -131,6 +145,7 @@ export async function updateRecording(
   if (patch.trimStart !== undefined) dbPatch.trim_start = patch.trimStart;
   if (patch.trimEnd !== undefined) dbPatch.trim_end = patch.trimEnd;
   if (patch.saved !== undefined) dbPatch.saved = patch.saved;
+  if (patch.workspaceId !== undefined) dbPatch.workspace_id = patch.workspaceId;
   if (Object.keys(dbPatch).length === 0) return getRecording(id);
 
   const { data, error } = await supabase

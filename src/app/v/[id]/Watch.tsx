@@ -18,6 +18,7 @@ import {
   isCloud,
 } from "@/lib/store";
 import { currentUserId } from "@/lib/auth";
+import { ensureMyWorkspace } from "@/lib/workspace";
 import type { AISummary, Comment, Recording } from "@/lib/types";
 import { formatDuration, formatRelativeDate, initials } from "@/lib/format";
 import { pushRecent } from "@/lib/recent";
@@ -42,6 +43,8 @@ export function Watch({ id }: { id: string }) {
   const [playhead, setPlayhead] = useState(0);
   const [isOwner, setIsOwner] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [myWorkspaceId, setMyWorkspaceId] = useState<string | null>(null);
+  const [sharingTeam, setSharingTeam] = useState(false);
 
   const [name, setName] = useState("You");
   const [body, setBody] = useState("");
@@ -84,6 +87,14 @@ export function Watch({ id }: { id: string }) {
     };
   }, [id]);
 
+  // When you own this recording, load your workspace so you can share it.
+  useEffect(() => {
+    if (!isOwner || !isCloud()) return;
+    ensureMyWorkspace()
+      .then((w) => setMyWorkspaceId(w?.id ?? null))
+      .catch(() => {});
+  }, [isOwner]);
+
   async function submitComment(emoji: string | null) {
     if (!rec) return;
     if (!emoji && !body.trim()) return;
@@ -115,6 +126,18 @@ export function Watch({ id }: { id: string }) {
     } catch {
       setDeleting(false);
       alert("Couldn't delete this recording. Please try again.");
+    }
+  }
+
+  async function toggleTeam() {
+    if (!rec || !myWorkspaceId || sharingTeam) return;
+    setSharingTeam(true);
+    const next = rec.workspaceId ? null : myWorkspaceId;
+    try {
+      await updateRecording(rec.id, { workspaceId: next });
+      setRec({ ...rec, workspaceId: next });
+    } finally {
+      setSharingTeam(false);
     }
   }
 
@@ -279,6 +302,19 @@ export function Watch({ id }: { id: string }) {
                   }`}
                 >
                   CC
+                </button>
+              )}
+              {isOwner && myWorkspaceId && (
+                <button
+                  onClick={toggleTeam}
+                  disabled={sharingTeam}
+                  className={`chip transition ${
+                    rec.workspaceId
+                      ? "border-[var(--brand)] text-[var(--brand)]"
+                      : "hover:text-[var(--text)]"
+                  }`}
+                >
+                  {rec.workspaceId ? "✓ Shared to team" : "Share to team"}
                 </button>
               )}
             </div>

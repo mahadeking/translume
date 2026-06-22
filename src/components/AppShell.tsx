@@ -17,6 +17,7 @@ import {
   IconLogout,
   IconMenu,
   IconClose,
+  IconUsers,
 } from "./icons";
 
 const nav = [
@@ -24,6 +25,7 @@ const nav = [
   { href: "/library", label: "Library", icon: IconLibrary },
   { href: "/recent", label: "Recent", icon: IconClock },
   { href: "/watch-later", label: "Watch later", icon: IconBookmark },
+  { href: "/team", label: "Team", icon: IconUsers },
   { href: "/insights", label: "Insights", icon: IconChart },
   { href: "/settings", label: "Personal Settings", icon: IconSettings },
 ];

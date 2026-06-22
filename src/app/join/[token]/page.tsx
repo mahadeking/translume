@@ -1,0 +1,10 @@
+import { Join } from "./Join";
+
+export default async function JoinPage({
+  params,
+}: {
+  params: Promise<{ token: string }>;
+}) {
+  const { token } = await params;
+  return <Join token={token} />;
+}

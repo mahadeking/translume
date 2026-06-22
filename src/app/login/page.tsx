@@ -6,6 +6,13 @@ import { Logo } from "@/components/Logo";
 import { signIn, signUp, signInWithGoogle } from "@/lib/auth";
 import { useAuth } from "@/lib/useAuth";
 
+/** Where to go after auth: a safe ?next= path, else /home. */
+function destAfterAuth(): string {
+  if (typeof window === "undefined") return "/home";
+  const next = new URLSearchParams(window.location.search).get("next");
+  return next && next.startsWith("/") ? next : "/home";
+}
+
 export default function LoginPage() {
   const router = useRouter();
   const { user, loading, authRequired } = useAuth();
@@ -18,7 +25,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (!authRequired) router.replace("/library");
-    else if (!loading && user) router.replace("/home");
+    else if (!loading && user) router.replace(destAfterAuth());
   }, [authRequired, loading, user, router]);
 
   async function submit(e: React.FormEvent) {
@@ -30,12 +37,12 @@ export default function LoginPage() {
       if (mode === "signup") {
         const { data, error } = await signUp(email.trim(), password);
         if (error) throw error;
-        if (data.session) router.replace("/home");
+        if (data.session) router.replace(destAfterAuth());
         else setNotice("Account created. Check your email to confirm, then sign in.");
       } else {
         const { error } = await signIn(email.trim(), password);
         if (error) throw error;
-        router.replace("/home");
+        router.replace(destAfterAuth());
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong.");
