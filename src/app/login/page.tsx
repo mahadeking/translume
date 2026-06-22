@@ -72,37 +72,34 @@ export default function LoginPage() {
   }
 
   return (
-    <div
-      style={{ colorScheme: "light" }}
-      className="relative grid min-h-screen place-items-center overflow-hidden bg-[#f3f4f7] px-6 py-10 text-slate-900"
-    >
+    <div className="relative grid min-h-screen place-items-center overflow-hidden px-6 py-10">
       {/* subtle grid backdrop */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-70"
+        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.18]"
         style={{
           backgroundImage:
-            "linear-gradient(#e6e8ee 1px, transparent 1px), linear-gradient(90deg, #e6e8ee 1px, transparent 1px)",
+            "linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px)",
           backgroundSize: "44px 44px",
-          maskImage: "radial-gradient(ellipse at center, black, transparent 78%)",
-          WebkitMaskImage: "radial-gradient(ellipse at center, black, transparent 78%)",
+          maskImage: "radial-gradient(ellipse at center, black, transparent 75%)",
+          WebkitMaskImage: "radial-gradient(ellipse at center, black, transparent 75%)",
         }}
       />
 
-      <div className="relative w-full max-w-sm fade-up">
+      <div className="w-full max-w-sm fade-up">
         <div className="flex flex-col items-center text-center">
           <Logo />
-          <h1 className="mt-5 text-2xl font-bold tracking-tight text-slate-900">
+          <h1 className="mt-5 text-2xl font-semibold tracking-tight">
             Welcome to Translume
           </h1>
-          <p className="mt-1.5 text-sm text-slate-500">
+          <p className="mt-1.5 text-sm text-[var(--text-dim)]">
             Sign in or create an account to record &amp; share.
           </p>
         </div>
 
-        <div className="mt-7 rounded-2xl border border-slate-100 bg-white p-6 shadow-xl shadow-slate-300/30">
+        <div className="glass-strong mt-7 rounded-2xl p-6">
           {/* Segmented tabs */}
-          <div className="flex rounded-xl bg-slate-100 p-1">
+          <div className="flex rounded-xl border border-[var(--border)] bg-black/20 p-1">
             {(["signin", "signup"] as const).map((m) => (
               <button
                 key={m}
@@ -114,8 +111,8 @@ export default function LoginPage() {
                 }}
                 className={`flex-1 rounded-lg py-2 text-sm font-semibold transition ${
                   mode === m
-                    ? "bg-white text-slate-900 shadow-sm"
-                    : "text-slate-500 hover:text-slate-700"
+                    ? "bg-[var(--panel-strong)] text-[var(--text)] shadow"
+                    : "text-[var(--text-dim)] hover:text-[var(--text)]"
                 }`}
               >
                 {m === "signin" ? "Sign in" : "Create account"}
@@ -126,23 +123,19 @@ export default function LoginPage() {
           <form onSubmit={submit} className="mt-5 flex flex-col gap-4">
             {mode === "signup" && (
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-slate-700">
-                  Name
-                </label>
+                <label className="mb-1.5 block text-sm font-medium">Name</label>
                 <input
                   type="text"
                   autoComplete="name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Your name"
-                  className="auth-input"
+                  className="input"
                 />
               </div>
             )}
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-slate-700">
-                Email
-              </label>
+              <label className="mb-1.5 block text-sm font-medium">Email</label>
               <input
                 type="email"
                 required
@@ -150,13 +143,11 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@company.com"
-                className="auth-input"
+                className="input"
               />
             </div>
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-slate-700">
-                Password
-              </label>
+              <label className="mb-1.5 block text-sm font-medium">Password</label>
               <input
                 type="password"
                 required
@@ -165,50 +156,47 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="At least 8 characters"
-                className="auth-input"
+                className="input"
               />
             </div>
 
             {error && (
-              <p className="rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-600">
+              <p className="rounded-xl border border-[rgba(255,90,120,0.3)] bg-[rgba(255,90,120,0.1)] px-3 py-2 text-sm text-[#ff8aa0]">
                 {error}
               </p>
             )}
             {notice && (
-              <p className="rounded-xl border border-green-200 bg-green-50 px-3 py-2 text-sm text-green-700">
+              <p className="rounded-xl border border-[rgba(74,222,128,0.3)] bg-[rgba(74,222,128,0.1)] px-3 py-2 text-sm text-[var(--success)]">
                 {notice}
               </p>
             )}
 
-            <button
-              type="submit"
-              disabled={busy}
-              className="rounded-xl bg-[#7c6cff] py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#6a5af0] disabled:opacity-60"
-            >
+            <button type="submit" disabled={busy} className="btn btn-primary py-3">
               {busy ? "Please wait…" : mode === "signin" ? "Sign in" : "Create account"}
             </button>
           </form>
 
           {/* OR divider */}
           <div className="my-5 flex items-center gap-3">
-            <span className="h-px flex-1 bg-slate-200" />
-            <span className="text-xs font-medium text-slate-400">OR</span>
-            <span className="h-px flex-1 bg-slate-200" />
+            <span className="h-px flex-1 bg-[var(--border)]" />
+            <span className="text-xs font-medium text-[var(--text-faint)]">OR</span>
+            <span className="h-px flex-1 bg-[var(--border)]" />
           </div>
 
           <button
             type="button"
             onClick={google}
             disabled={busy}
-            className="flex w-full items-center justify-center gap-2.5 rounded-xl border border-slate-200 bg-white py-3 text-sm font-medium text-slate-700 transition hover:bg-slate-50 disabled:opacity-60"
+            className="btn btn-ghost w-full py-3"
           >
             <GoogleIcon />
             Continue with Google
           </button>
         </div>
 
-        <p className="mt-5 text-center text-xs text-slate-400">
-          By continuing you agree to the <span className="underline">terms</span>.
+        <p className="mt-5 text-center text-xs text-[var(--text-faint)]">
+          By continuing you agree to the{" "}
+          <span className="underline">terms</span>.
         </p>
       </div>
     </div>
