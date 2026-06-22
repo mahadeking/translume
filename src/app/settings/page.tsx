@@ -74,7 +74,7 @@ export default function SettingsPage() {
         </p>
 
         {/* Tabs */}
-        <div className="mt-6 flex flex-wrap gap-x-1 border-b border-[var(--border)] pb-px">
+        <div className="no-scrollbar mt-6 flex gap-1 overflow-x-auto border-b border-[var(--border)] pb-px">
           {TABS.map((t) => {
             const active = tab === t.key;
             return (
