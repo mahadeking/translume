@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AppShell } from "@/components/AppShell";
 import { useAuth } from "@/lib/useAuth";
-import { signOut, updateDisplayName } from "@/lib/auth";
+import { signOut, updateDisplayName, deleteMyAccount } from "@/lib/auth";
 import {
   listRecordings,
   deleteRecording,
@@ -175,14 +175,34 @@ function AccountTab({
   metaName: string;
   onSignOut: () => void;
 }) {
+  const router = useRouter();
   const [name, setName] = useState(metaName);
   const [savingName, setSavingName] = useState(false);
   const [nameSaved, setNameSaved] = useState(false);
   const [wiping, setWiping] = useState(false);
+  const [deletingAccount, setDeletingAccount] = useState(false);
 
   useEffect(() => {
     setName(metaName);
   }, [metaName]);
+
+  async function handleDeleteAccount() {
+    if (
+      !confirm(
+        "Permanently delete your account and ALL your recordings, folders, and workspace data? This cannot be undone."
+      )
+    )
+      return;
+    setDeletingAccount(true);
+    const res = await deleteMyAccount();
+    if (res.ok) {
+      await signOut();
+      router.replace("/login");
+    } else {
+      setDeletingAccount(false);
+      alert(res.message ?? "Couldn't delete your account.");
+    }
+  }
 
   async function saveName() {
     if (!hasUser) return;
@@ -272,16 +292,33 @@ function AccountTab({
       {/* Danger zone */}
       <div className="card border-[rgba(255,90,120,0.25)] p-5">
         <h2 className="text-sm font-semibold text-[var(--danger)]">Danger zone</h2>
-        <p className="mt-2 text-sm text-[var(--text-dim)]">
-          Permanently delete all of your recordings and folders. This can&apos;t be undone.
-        </p>
-        <button onClick={deleteAllData} disabled={wiping} className="btn btn-danger mt-4">
-          <IconTrash width={16} height={16} />
-          {wiping ? "Deleting…" : "Delete all my recordings"}
-        </button>
-        <p className="mt-3 text-xs text-[var(--text-faint)]">
-          Full account (login) deletion is coming soon.
-        </p>
+
+        <div className="mt-3">
+          <div className="text-sm font-medium">Delete all recordings</div>
+          <p className="mt-1 text-xs text-[var(--text-dim)]">
+            Removes every recording and folder, but keeps your account.
+          </p>
+          <button onClick={deleteAllData} disabled={wiping} className="btn btn-danger mt-3">
+            <IconTrash width={16} height={16} />
+            {wiping ? "Deleting…" : "Delete all my recordings"}
+          </button>
+        </div>
+
+        <div className="mt-5 border-t border-[rgba(255,90,120,0.2)] pt-5">
+          <div className="text-sm font-medium">Delete account</div>
+          <p className="mt-1 text-xs text-[var(--text-dim)]">
+            Permanently deletes your login and all your data, everywhere. This
+            cannot be undone.
+          </p>
+          <button
+            onClick={handleDeleteAccount}
+            disabled={deletingAccount || !hasUser}
+            className="btn btn-danger mt-3"
+          >
+            <IconTrash width={16} height={16} />
+            {deletingAccount ? "Deleting…" : "Delete my account"}
+          </button>
+        </div>
       </div>
     </div>
   );
