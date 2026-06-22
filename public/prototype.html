@@ -8,49 +8,55 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#f7f7fb; --card:#fff; --tert:#fbfbfd; --ink:#10122a; --muted:#6b7088;
-    --faint:#9295ad; --line:#e8e8f0; --line2:#d7d8e3; --brand:#7c6cff; --brandink:#5b4bd6;
-    --okbg:#e7f8f0; --ok:#0f9d63; --dark:#0c0c14;
+    --bg:#07070b; --card:#0e0e18; --tert:#13131f; --ink:#ececf3; --muted:#a2a2b4;
+    --faint:#6c6c80; --line:rgba(255,255,255,.10); --line2:rgba(255,255,255,.18);
+    --panel:rgba(255,255,255,.04); --panel2:rgba(255,255,255,.07);
+    --brand:#7c6cff; --brandlt:#b9adff; --ok:#4ade80; --okbg:rgba(74,222,128,.14); --danger:#ff5a78;
   }
   *{box-sizing:border-box}
-  body{margin:0;background:var(--bg);color:var(--ink);
+  body{margin:0;color:var(--ink);
+    background:
+      radial-gradient(55rem 42rem at 10% -8%, rgba(124,108,255,.16), transparent 60%),
+      radial-gradient(48rem 40rem at 100% 0%, rgba(199,92,255,.12), transparent 55%),
+      var(--bg);
     font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
     -webkit-font-smoothing:antialiased;line-height:1.55}
   .wrap{max-width:1000px;margin:0 auto;padding:40px 24px 64px}
-  a{color:var(--brand);text-decoration:none}
+  a{color:var(--brandlt);text-decoration:none}
   .logo{display:inline-flex;align-items:center;gap:10px}
-  .mark{width:34px;height:34px;border-radius:10px;background:linear-gradient(120deg,#7c6cff,#9b6cff 55%,#c75cff);
-    display:grid;place-items:center;color:#fff}
-  .gtxt{background:linear-gradient(100deg,#7c6cff,#9b6cff 55%,#c75cff);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .mark{position:relative;width:34px;height:34px;border-radius:10px;background:linear-gradient(120deg,#7c6cff,#9b6cff 55%,#c75cff);display:grid;place-items:center;color:#fff}
+  .gtxt{background:linear-gradient(100deg,#b9adff,#c75cff 55%,#5ad1ff);-webkit-background-clip:text;background-clip:text;color:transparent}
   .badge{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);
-    border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 12px}
+    border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:5px 12px}
   .frame{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card);
-    margin-bottom:18px;box-shadow:0 8px 30px -16px rgba(20,20,50,.18)}
+    margin-bottom:18px;box-shadow:0 16px 40px -22px rgba(0,0,0,.8)}
   .bar{display:flex;align-items:center;gap:6px;padding:9px 13px;border-bottom:1px solid var(--line);background:var(--tert)}
   .dot{width:10px;height:10px;border-radius:50%}
-  .url{font-size:11px;color:var(--faint);background:#fff;border:1px solid var(--line);border-radius:7px;padding:3px 12px;margin-left:6px}
+  .url{font-size:11px;color:var(--faint);background:rgba(0,0,0,.3);border:1px solid var(--line);border-radius:7px;padding:3px 12px;margin-left:6px}
   .flbl{margin-left:auto;font-size:11px;color:var(--faint)}
   .btn{display:inline-flex;align-items:center;gap:6px;font-size:13px;border-radius:9px;padding:9px 15px;font-weight:500}
-  .prim{background:var(--brand);color:#fff}
-  .out{border:1px solid var(--line2);color:var(--ink)}
-  .av{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#7c6cff,#c75cff);color:#fff;
-    display:grid;place-items:center;font-weight:600;font-size:14px}
+  .prim{background:linear-gradient(120deg,#7c6cff,#c75cff);color:#fff}
+  .out{border:1px solid var(--line2);color:var(--ink);background:var(--panel)}
+  .av{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#7c6cff,#c75cff);color:#fff;display:grid;place-items:center;font-weight:600;font-size:14px}
   .meta{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--muted);margin-top:8px}
   .nav{display:flex;align-items:center;gap:9px;font-size:12.5px;padding:7px 9px;border-radius:9px;color:var(--muted)}
-  .nav.on{background:#eeecff;color:var(--brandink);font-weight:500}
+  .nav.on{background:var(--panel2);color:var(--ink);font-weight:500}
   .ic{width:16px;height:16px;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
   .pill{font-size:12px;border-radius:7px;padding:3px 10px}
-  .row{display:flex;align-items:center;gap:11px;border:1px solid var(--line);border-radius:11px;padding:11px}
+  .row{display:flex;align-items:center;gap:11px;border:1px solid var(--line);border-radius:11px;padding:11px;background:var(--panel)}
   h1{font-size:28px;font-weight:700;letter-spacing:-.02em;margin:18px 0 6px}
   .feat{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin-top:8px}
   .feat div{font-size:13.5px;color:var(--muted);display:flex;gap:8px;align-items:flex-start}
   .play{width:54px;height:54px;border-radius:50%;background:linear-gradient(120deg,#7c6cff,#c75cff);display:grid;place-items:center;box-shadow:0 8px 24px -8px rgba(124,108,255,.7)}
-  .vcard{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#fff}
+  .vcard{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--panel)}
   .thumb{aspect-ratio:16/10;display:grid;place-items:center;position:relative}
+  .inp{border:1px solid var(--line2);background:rgba(0,0,0,.25);border-radius:9px;padding:9px 11px;font-size:12.5px;color:var(--faint)}
   .toggle{width:38px;height:22px;border-radius:999px;background:var(--brand);position:relative;flex:none}
   .toggle::after{content:"";position:absolute;top:2px;left:18px;width:18px;height:18px;border-radius:50%;background:#fff}
-  .toggle.off{background:#d7d8e3}.toggle.off::after{left:2px}
-  @media print{body{background:#fff}.frame{box-shadow:none;break-inside:avoid}.wrap{padding:16px}}
+  .toggle.off{background:rgba(255,255,255,.18)}.toggle.off::after{left:2px}
+  .tab{font-size:12px;padding:6px 11px;border-radius:8px;color:var(--muted)}
+  .tab.on{background:var(--panel2);color:var(--ink);font-weight:500}
+  @media print{*{-webkit-print-color-adjust:exact;print-color-adjust:exact}.frame{box-shadow:none;break-inside:avoid}.wrap{padding:16px}}
   @media (max-width:720px){.two{grid-template-columns:1fr !important}.split{grid-template-columns:1fr !important}}
 </style>
 </head>
@@ -59,26 +65,26 @@
 
   <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
     <div class="logo">
-      <span class="mark"><svg viewBox="0 0 24 24" width="17" height="17"><path d="M7 5v14l11-7L7 5Z" fill="#fff"/></svg></span>
+      <span class="mark"><svg viewBox="0 0 24 24" width="17" height="17"><path d="M7 5v14l11-7L7 5Z" fill="#fff"/></svg><span style="position:absolute;top:-3px;right:-3px;width:10px;height:10px;border-radius:50%;background:#ff5a78;border:2px solid #07070b"></span></span>
       <span style="font-size:20px;font-weight:600;letter-spacing:-.01em">Translume</span>
     </div>
     <a class="badge" href="https://translume.vercel.app">
-      <span class="dot" style="background:#0f9d63"></span> Live at translume.vercel.app
+      <span class="dot" style="background:#4ade80"></span> Live at translume.vercel.app
     </a>
   </div>
 
   <h1>Talk through it, <span class="gtxt">don't type it all out</span>.</h1>
   <p style="font-size:15px;color:var(--muted);max-width:680px;margin:0 0 4px">
-    Our in-house async video tool — a modern alternative to Loom, built from scratch and running on our own
-    infrastructure. Record your screen and camera, share an instant link, and let people reply on the timeline.
-    This is a visual walkthrough of the core screens.
+    Our in-house async video tool — a modern alternative to Loom, built from scratch on our own infrastructure.
+    Record your screen and camera, share an instant link, and let people reply on the timeline. A visual
+    walkthrough of every screen.
   </p>
 
   <div class="feat" style="margin:18px 0 26px">
     <div><span style="color:var(--brand)">●</span> Record screen, camera, or both with a webcam bubble</div>
     <div><span style="color:var(--brand)">●</span> Instant share links &amp; timeline comments</div>
     <div><span style="color:var(--brand)">●</span> AI title, summary, chapters &amp; captions</div>
-    <div><span style="color:var(--brand)">●</span> Library with folders, search &amp; watch later</div>
+    <div><span style="color:var(--brand)">●</span> Email &amp; Google sign-in, per-user libraries</div>
     <div><span style="color:var(--brand)">●</span> Team workspaces with invite links</div>
     <div><span style="color:var(--brand)">●</span> Password, link expiry &amp; download controls</div>
   </div>
@@ -86,15 +92,41 @@
   <div class="frame">
     <div class="bar"><span class="dot" style="background:#ef6f6f"></span><span class="dot" style="background:#f3c04b"></span><span class="dot" style="background:#5bc98a"></span><span class="url">translume.vercel.app</span><span class="flbl">Landing page</span></div>
     <div style="padding:26px 24px">
-      <div style="display:flex;gap:16px;font-size:12.5px;color:var(--muted);margin-bottom:18px">
-        <span>Apps</span><span>Solutions</span><span>Resources ⌄</span>
-      </div>
+      <div style="display:flex;gap:16px;font-size:12.5px;color:var(--muted);margin-bottom:18px"><span>Apps</span><span>Solutions</span><span>Resources ⌄</span></div>
       <span class="badge" style="font-size:12px">The async video tool your screenshots wish they were</span>
       <div style="font-size:32px;font-weight:700;letter-spacing:-.02em;line-height:1.1;margin:14px 0 10px">Talk through it.<br><span class="gtxt">Don't type it all out.</span></div>
-      <p style="font-size:14.5px;color:var(--muted);max-width:500px;margin:0 0 18px">Record your screen and camera, get an instant link, and let people reply right on the timeline. A faster, far better-looking way to send a video message.</p>
-      <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <span class="btn prim">Record your first Translume</span>
-        <span class="btn out">Start for free →</span>
+      <p style="font-size:14.5px;color:var(--muted);max-width:500px;margin:0 0 18px">Record your screen and camera, get an instant link, and let people reply right on the timeline.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap"><span class="btn prim">Record your first Translume</span><span class="btn out">Start for free →</span></div>
+    </div>
+  </div>
+
+  <div class="frame">
+    <div class="bar"><span class="dot" style="background:#ef6f6f"></span><span class="dot" style="background:#f3c04b"></span><span class="dot" style="background:#5bc98a"></span><span class="url">translume.vercel.app/login</span><span class="flbl">Sign up · email or Google</span></div>
+    <div style="padding:26px 24px;display:grid;place-items:center">
+      <div style="width:100%;max-width:340px">
+        <div style="text-align:center;margin-bottom:16px">
+          <span class="mark" style="display:inline-grid;vertical-align:middle"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M7 5v14l11-7L7 5Z" fill="#fff"/></svg></span>
+          <div style="font-size:18px;font-weight:600;margin-top:8px">Welcome to Translume</div>
+          <div style="font-size:12.5px;color:var(--muted)">Sign in or create an account to record &amp; share.</div>
+        </div>
+        <div style="border:1px solid var(--line2);background:var(--panel);border-radius:16px;padding:18px">
+          <div style="display:flex;gap:4px;background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:10px;padding:4px;margin-bottom:14px">
+            <span class="tab" style="flex:1;text-align:center">Sign in</span>
+            <span class="tab on" style="flex:1;text-align:center">Create account</span>
+          </div>
+          <div style="font-size:11.5px;color:var(--muted);margin-bottom:4px">Name</div>
+          <div class="inp" style="margin-bottom:11px">Your name</div>
+          <div style="font-size:11.5px;color:var(--muted);margin-bottom:4px">Email</div>
+          <div class="inp" style="margin-bottom:11px">you@company.com</div>
+          <div style="font-size:11.5px;color:var(--muted);margin-bottom:4px">Password</div>
+          <div class="inp" style="margin-bottom:13px">At least 8 characters</div>
+          <div class="btn prim" style="width:100%;justify-content:center;padding:11px">Create account</div>
+          <div style="display:flex;align-items:center;gap:10px;margin:13px 0;color:var(--faint);font-size:11px"><span style="flex:1;height:1px;background:var(--line)"></span>OR<span style="flex:1;height:1px;background:var(--line)"></span></div>
+          <div class="btn out" style="width:100%;justify-content:center;padding:11px;gap:9px">
+            <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3c-1.6 4.7-6.1 8-11.3 8a12 12 0 1 1 0-24c3.1 0 5.9 1.2 8 3.1l5.7-5.7A20 20 0 1 0 24 44c11 0 20-9 20-20 0-1.3-.1-2.3-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 16 19 13 24 13c3.1 0 5.9 1.2 8 3.1l5.7-5.7A20 20 0 0 0 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2A12 12 0 0 1 12.7 28l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3a12 12 0 0 1-4.1 5.6l6.2 5.2C39.9 36 44 30.7 44 24c0-1.3-.1-2.3-.4-3.5z"/></svg>
+            Continue with Google
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -103,19 +135,19 @@
     <div class="bar"><span class="dot" style="background:#ef6f6f"></span><span class="dot" style="background:#f3c04b"></span><span class="dot" style="background:#5bc98a"></span><span class="url">translume.vercel.app/record</span><span class="flbl">Recorder</span></div>
     <div style="padding:22px 24px">
       <div style="font-size:18px;font-weight:600;margin-bottom:16px">New recording</div>
-      <div class="split" style="display:grid;grid-template-columns:200px 1fr;gap:20px">
+      <div class="split" style="display:grid;grid-template-columns:210px 1fr;gap:20px">
         <div style="display:flex;flex-direction:column;gap:10px">
           <div style="font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--faint)">Capture</div>
           <div class="row" style="padding:10px 12px"><svg class="ic" viewBox="0 0 24 24" style="color:var(--muted)"><rect x="2.5" y="4" width="19" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span style="font-size:13px">Screen</span></div>
-          <div class="row" style="padding:10px 12px;border-color:var(--brand);background:#f4f2ff"><svg class="ic" viewBox="0 0 24 24" style="color:var(--brand)"><rect x="2.5" y="4" width="19" height="13" rx="2"/><circle cx="17.5" cy="13" r="3"/></svg><span style="font-size:13px;font-weight:500;color:var(--brandink)">Screen + camera</span></div>
+          <div class="row" style="padding:10px 12px;border-color:var(--brand);background:rgba(124,108,255,.12)"><svg class="ic" viewBox="0 0 24 24" style="color:var(--brandlt)"><rect x="2.5" y="4" width="19" height="13" rx="2"/><circle cx="17.5" cy="13" r="3"/></svg><span style="font-size:13px;font-weight:500;color:var(--brandlt)">Screen + camera</span></div>
           <div class="row" style="padding:10px 12px"><svg class="ic" viewBox="0 0 24 24" style="color:var(--muted)"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="11" r="3"/><path d="M6.5 19a6 6 0 0 1 11 0"/></svg><span style="font-size:13px">Camera</span></div>
           <div style="display:flex;align-items:center;gap:10px;margin-top:6px;font-size:13px;color:var(--muted)"><span class="toggle"></span> Microphone</div>
           <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted)"><span class="toggle"></span> 3‑2‑1 countdown</div>
         </div>
         <div>
           <div style="aspect-ratio:16/9;border-radius:12px;background:linear-gradient(135deg,#181528,#241733);position:relative;border:1px solid var(--line)">
-            <div style="position:absolute;left:14px;top:12px" class="badge"><span class="dot" style="background:#ef4444"></span> Ready to record</div>
-            <span style="position:absolute;right:16px;bottom:16px;width:62px;height:62px;border-radius:50%;background:linear-gradient(135deg,#7c6cff,#c75cff);border:3px solid #fff;display:grid;place-items:center;color:#fff;font-size:11px;font-weight:600">You</span>
+            <div class="badge" style="position:absolute;left:14px;top:12px;background:rgba(0,0,0,.45)"><span class="dot" style="background:#ef4444"></span> Ready to record</div>
+            <span style="position:absolute;right:16px;bottom:16px;width:62px;height:62px;border-radius:50%;background:linear-gradient(135deg,#7c6cff,#c75cff);border:3px solid rgba(255,255,255,.85);display:grid;place-items:center;color:#fff;font-size:11px;font-weight:600">You</span>
           </div>
           <div style="display:flex;justify-content:center;margin-top:16px"><span class="btn prim" style="padding:11px 22px"><svg class="ic" viewBox="0 0 24 24" style="color:#fff"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4" fill="#fff" stroke="none"/></svg> Start recording</span></div>
         </div>
@@ -129,31 +161,25 @@
       <div style="padding:18px 20px;border-right:1px solid var(--line)">
         <div style="aspect-ratio:16/9;border-radius:12px;background:linear-gradient(135deg,#181528,#2a1838);display:grid;place-items:center;position:relative">
           <span class="play"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M8 5v14l11-7L8 5Z" fill="#fff"/></svg></span>
-          <div style="position:absolute;left:14px;right:14px;bottom:12px;height:5px;border-radius:999px;background:rgba(255,255,255,.25)"><span style="display:block;width:38%;height:100%;border-radius:999px;background:linear-gradient(90deg,#7c6cff,#c75cff)"></span></div>
+          <div style="position:absolute;left:14px;right:14px;bottom:12px;height:5px;border-radius:999px;background:rgba(255,255,255,.22)"><span style="display:block;width:38%;height:100%;border-radius:999px;background:linear-gradient(90deg,#7c6cff,#c75cff)"></span></div>
         </div>
         <div style="font-size:19px;font-weight:600;letter-spacing:-.01em;margin-top:14px">Quarterly product update</div>
-        <div class="meta" style="gap:14px"><span style="display:flex;align-items:center;gap:6px"><svg class="ic" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>128 views</span><span style="display:flex;align-items:center;gap:6px"><svg class="ic" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.5 7.2L4 20l1-4.2A8 8 0 1 1 21 12Z"/></svg>6 comments</span><span class="pill" style="background:#f1f0fa;color:var(--muted)">5:42</span></div>
-        <div style="border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:14px">
+        <div class="meta" style="gap:14px"><span style="display:flex;align-items:center;gap:6px"><svg class="ic" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>128 views</span><span style="display:flex;align-items:center;gap:6px"><svg class="ic" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.5 7.2L4 20l1-4.2A8 8 0 1 1 21 12Z"/></svg>6 comments</span><span class="pill" style="background:var(--panel2);color:var(--muted)">5:42</span></div>
+        <div style="border:1px solid var(--line);border-radius:12px;padding:14px;margin-top:14px;background:var(--panel)">
           <div style="display:flex;align-items:center;gap:7px;font-size:13px;font-weight:600;margin-bottom:8px"><svg class="ic" viewBox="0 0 24 24" style="color:#c75cff"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Z" fill="#c75cff" stroke="none"/></svg>AI summary</div>
           <p style="font-size:12.5px;color:var(--muted);margin:0 0 10px">A walkthrough of Q2 wins, the new dashboard, and what's shipping next quarter.</p>
           <div style="display:flex;flex-direction:column;gap:5px;font-size:12px">
-            <span style="display:flex;gap:9px"><span style="color:var(--brand);font-variant-numeric:tabular-nums">0:00</span> Intro &amp; agenda</span>
-            <span style="display:flex;gap:9px"><span style="color:var(--brand);font-variant-numeric:tabular-nums">1:24</span> New dashboard demo</span>
-            <span style="display:flex;gap:9px"><span style="color:var(--brand);font-variant-numeric:tabular-nums">3:50</span> Roadmap &amp; next steps</span>
+            <span style="display:flex;gap:9px"><span style="color:var(--brandlt);font-variant-numeric:tabular-nums">0:00</span> Intro &amp; agenda</span>
+            <span style="display:flex;gap:9px"><span style="color:var(--brandlt);font-variant-numeric:tabular-nums">1:24</span> New dashboard demo</span>
+            <span style="display:flex;gap:9px"><span style="color:var(--brandlt);font-variant-numeric:tabular-nums">3:50</span> Roadmap &amp; next steps</span>
           </div>
         </div>
       </div>
       <div style="padding:18px 18px;display:flex;flex-direction:column">
         <div style="font-size:13px;font-weight:600;margin-bottom:12px">Conversation</div>
-        <div style="display:flex;gap:10px;margin-bottom:14px">
-          <span class="av" style="width:30px;height:30px;font-size:11px">JL</span>
-          <div><div style="font-size:12.5px"><b style="font-weight:600">Jordan</b> <span class="pill" style="background:#f1f0fa;color:var(--brand)">1:32</span></div><div style="font-size:12.5px;color:var(--muted)">Love the new dashboard layout 🎉</div></div>
-        </div>
-        <div style="display:flex;gap:10px;margin-bottom:14px">
-          <span class="av" style="width:30px;height:30px;font-size:11px">SR</span>
-          <div><div style="font-size:12.5px"><b style="font-weight:600">Sam</b> <span class="pill" style="background:#f1f0fa;color:var(--brand)">3:58</span></div><div style="font-size:12.5px;color:var(--muted)">Can we ship the export by EOQ?</div></div>
-        </div>
-        <div style="margin-top:auto;border:1px solid var(--line2);border-radius:10px;padding:9px 11px;font-size:12.5px;color:var(--faint);display:flex;justify-content:space-between;align-items:center">Comment at 4:10… <span style="display:flex;gap:5px">👍 ❤️ 😂</span></div>
+        <div style="display:flex;gap:10px;margin-bottom:14px"><span class="av" style="width:30px;height:30px;font-size:11px">JL</span><div><div style="font-size:12.5px"><b style="font-weight:600">Jordan</b> <span class="pill" style="background:var(--panel2);color:var(--brandlt)">1:32</span></div><div style="font-size:12.5px;color:var(--muted)">Love the new dashboard layout 🎉</div></div></div>
+        <div style="display:flex;gap:10px;margin-bottom:14px"><span class="av" style="width:30px;height:30px;font-size:11px">SR</span><div><div style="font-size:12.5px"><b style="font-weight:600">Sam</b> <span class="pill" style="background:var(--panel2);color:var(--brandlt)">3:58</span></div><div style="font-size:12.5px;color:var(--muted)">Can we ship the export by EOQ?</div></div></div>
+        <div style="margin-top:auto;border:1px solid var(--line2);border-radius:10px;padding:9px 11px;font-size:12.5px;color:var(--faint);display:flex;justify-content:space-between;align-items:center">Comment at 4:10… <span>👍 ❤️ 😂</span></div>
       </div>
     </div>
   </div>
@@ -163,20 +189,39 @@
     <div class="split" style="display:grid;grid-template-columns:170px 1fr">
       <div style="padding:14px 12px;border-right:1px solid var(--line)">
         <span class="btn prim" style="width:100%;justify-content:center;margin-bottom:12px;font-size:12.5px"><svg class="ic" viewBox="0 0 24 24" style="color:#fff"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4" fill="#fff" stroke="none"/></svg>New recording</span>
-        <div class="nav">Home</div>
-        <div class="nav on">Library</div>
-        <div class="nav">Recent</div>
-        <div class="nav">Watch later</div>
-        <div class="nav">Team</div>
-        <div class="nav">Insights</div>
-        <div class="nav">Personal Settings</div>
+        <div class="nav">Home</div><div class="nav on">Library</div><div class="nav">Recent</div><div class="nav">Watch later</div><div class="nav">Team</div><div class="nav">Insights</div><div class="nav">Personal Settings</div>
       </div>
       <div style="padding:18px 20px">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px"><div style="font-size:18px;font-weight:600">Library</div><span class="btn out" style="padding:7px 12px;font-size:12.5px">Search…</span></div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px">
           <div class="vcard"><div class="thumb" style="background:linear-gradient(135deg,#c2410c,#ea580c)"><span class="play" style="width:38px;height:38px"><svg viewBox="0 0 24 24" width="15" height="15"><path d="M8 5v14l11-7L8 5Z" fill="#fff"/></svg></span><span style="position:absolute;right:7px;bottom:7px;font-size:10px;background:rgba(0,0,0,.6);color:#fff;border-radius:5px;padding:1px 6px">5:42</span></div><div style="padding:10px"><div style="font-size:12.5px;font-weight:600">Quarterly update</div><div style="font-size:11px;color:var(--faint);margin-top:2px">2h ago · 128 views</div></div></div>
-          <div class="vcard"><div class="thumb" style="background:linear-gradient(135deg,#7c6cff,#c75cff)"><span class="play" style="width:38px;height:38px"><svg viewBox="0 0 24 24" width="15" height="15"><path d="M8 5v14l11-7L8 5Z" fill="#fff"/></svg></span><span style="position:absolute;left:7px;top:7px;font-size:10px;background:rgba(255,255,255,.85);color:#5b4bd6;border-radius:5px;padding:1px 6px">Team</span><span style="position:absolute;right:7px;bottom:7px;font-size:10px;background:rgba(0,0,0,.6);color:#fff;border-radius:5px;padding:1px 6px">2:18</span></div><div style="padding:10px"><div style="font-size:12.5px;font-weight:600">Bug walkthrough</div><div style="font-size:11px;color:var(--faint);margin-top:2px">Yesterday · 34 views</div></div></div>
+          <div class="vcard"><div class="thumb" style="background:linear-gradient(135deg,#7c6cff,#c75cff)"><span class="play" style="width:38px;height:38px"><svg viewBox="0 0 24 24" width="15" height="15"><path d="M8 5v14l11-7L8 5Z" fill="#fff"/></svg></span><span style="position:absolute;left:7px;top:7px;font-size:10px;background:rgba(0,0,0,.55);color:#d9d2ff;border-radius:5px;padding:1px 6px">Team</span><span style="position:absolute;right:7px;bottom:7px;font-size:10px;background:rgba(0,0,0,.6);color:#fff;border-radius:5px;padding:1px 6px">2:18</span></div><div style="padding:10px"><div style="font-size:12.5px;font-weight:600">Bug walkthrough</div><div style="font-size:11px;color:var(--faint);margin-top:2px">Yesterday · 34 views</div></div></div>
           <div class="vcard"><div class="thumb" style="background:linear-gradient(135deg,#0e7490,#0891b2)"><span class="play" style="width:38px;height:38px"><svg viewBox="0 0 24 24" width="15" height="15"><path d="M8 5v14l11-7L8 5Z" fill="#fff"/></svg></span><span style="position:absolute;right:7px;bottom:7px;font-size:10px;background:rgba(0,0,0,.6);color:#fff;border-radius:5px;padding:1px 6px">8:05</span></div><div style="padding:10px"><div style="font-size:12.5px;font-weight:600">Onboarding guide</div><div style="font-size:11px;color:var(--faint);margin-top:2px">3 days ago · 92 views</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="frame">
+    <div class="bar"><span class="dot" style="background:#ef6f6f"></span><span class="dot" style="background:#f3c04b"></span><span class="dot" style="background:#5bc98a"></span><span class="url">translume.vercel.app/settings</span><span class="flbl">Personal Settings</span></div>
+    <div style="padding:20px 22px">
+      <div style="font-size:18px;font-weight:600;margin-bottom:14px">Personal Settings</div>
+      <div style="display:flex;flex-wrap:wrap;gap:4px;border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:18px">
+        <span class="tab on">My account</span><span class="tab">Meeting recordings</span><span class="tab">Push notifications</span><span class="tab">Integrations</span><span class="tab">Quick record</span><span class="tab">Keyboard shortcuts</span>
+      </div>
+      <div class="split" style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <div class="row" style="display:block;padding:16px">
+          <div style="font-size:13px;font-weight:600;margin-bottom:12px">Profile</div>
+          <div style="display:flex;align-items:center;gap:12px"><span class="av">MH</span><div style="flex:1"><div style="font-size:11.5px;color:var(--muted);margin-bottom:3px">Full name</div><div class="inp" style="color:var(--ink)">Mahade Hasan</div></div></div>
+          <div style="font-size:11.5px;color:var(--muted);margin:12px 0 3px">Email address</div>
+          <div style="font-size:13px">mahade@transparencystrategies.com</div>
+        </div>
+        <div class="row" style="display:block;padding:16px;border-color:rgba(255,90,120,.3)">
+          <div style="font-size:13px;font-weight:600;color:var(--danger);margin-bottom:6px">Danger zone</div>
+          <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Delete all recordings, but keep your account.</div>
+          <span class="pill" style="border:1px solid rgba(255,90,120,.3);color:#ff8aa0;display:inline-block;margin-bottom:12px">Delete all my recordings</span>
+          <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Permanently delete your login and all data.</div>
+          <span class="pill" style="background:rgba(255,90,120,.14);color:#ff8aa0">Delete my account</span>
         </div>
       </div>
     </div>
@@ -184,14 +229,14 @@
 
   <div class="two" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px">
     <div class="frame" style="margin-bottom:0">
-      <div class="bar"><span class="dot" style="background:#ef6f6f"></span><span class="dot" style="background:#f3c04b"></span><span class="dot" style="background:#5bc98a"></span><span class="flbl">Team workspace</span></div>
+      <div class="bar"><span class="dot" style="background:#ef6f6f"></span><span class="dot" style="background:#f3c04b"></span><span class="dot" style="background:#5bc98a"></span><span class="flbl">Team workspace &amp; invite</span></div>
       <div style="padding:18px 20px">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><span style="width:38px;height:38px;border-radius:10px;background:#eeecff;color:var(--brandink);display:grid;place-items:center;font-weight:600">T</span><div><div style="font-size:14px;font-weight:600">Transparency Strategies</div><div style="font-size:11.5px;color:var(--faint)">3 members</div></div></div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px"><span style="width:38px;height:38px;border-radius:10px;background:var(--panel2);color:var(--brandlt);display:grid;place-items:center;font-weight:600">T</span><div><div style="font-size:14px;font-weight:600">Transparency Strategies</div><div style="font-size:11.5px;color:var(--faint)">3 members</div></div></div>
         <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">
-          <div style="display:flex;align-items:center;gap:9px"><span class="av" style="width:28px;height:28px;font-size:11px">MH</span><span style="font-size:12.5px;flex:1">mahade@transparencystrategies.com</span><span class="pill" style="background:#f1f0fa;color:var(--muted)">owner</span></div>
-          <div style="display:flex;align-items:center;gap:9px"><span class="av" style="width:28px;height:28px;font-size:11px">JL</span><span style="font-size:12.5px;flex:1">jordan@example.com</span><span class="pill" style="background:#f1f0fa;color:var(--muted)">member</span></div>
+          <div style="display:flex;align-items:center;gap:9px"><span class="av" style="width:28px;height:28px;font-size:11px">MH</span><span style="font-size:12.5px;flex:1">mahade@transparencystrategies.com</span><span class="pill" style="background:var(--panel2);color:var(--muted)">owner</span></div>
+          <div style="display:flex;align-items:center;gap:9px"><span class="av" style="width:28px;height:28px;font-size:11px">JL</span><span style="font-size:12.5px;flex:1">jordan@example.com</span><span class="pill" style="background:var(--panel2);color:var(--muted)">member</span></div>
         </div>
-        <div style="display:flex;gap:8px"><div style="flex:1;border:1px solid var(--line2);border-radius:9px;padding:8px 11px;font-size:11.5px;color:var(--faint)">translume.vercel.app/join/...</div><span class="btn prim" style="padding:8px 13px">Copy link</span></div>
+        <div style="display:flex;gap:8px"><div class="inp" style="flex:1">translume.vercel.app/join/...</div><span class="btn prim" style="padding:8px 13px">Copy link</span></div>
         <div style="font-size:11px;color:var(--faint);margin-top:8px">Anyone with the link can join. Expires in 30 days.</div>
       </div>
     </div>
@@ -200,7 +245,7 @@
       <div class="bar"><span class="dot" style="background:#ef6f6f"></span><span class="dot" style="background:#f3c04b"></span><span class="dot" style="background:#5bc98a"></span><span class="flbl">Access controls</span></div>
       <div style="padding:18px 20px;display:flex;flex-direction:column;gap:11px">
         <div class="row" style="justify-content:space-between"><div style="display:flex;align-items:center;gap:10px"><svg class="ic" viewBox="0 0 24 24" style="color:var(--muted)"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><div><div style="font-size:13px;font-weight:600">Password protect</div><div style="font-size:11px;color:var(--faint)">Viewers must enter a password</div></div></div><span class="pill" style="color:var(--ok);background:var(--okbg)">On</span></div>
-        <div class="row" style="justify-content:space-between"><div style="display:flex;align-items:center;gap:10px"><svg class="ic" viewBox="0 0 24 24" style="color:var(--muted)"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg><div><div style="font-size:13px;font-weight:600">Link expiry</div><div style="font-size:11px;color:var(--faint)">Stops working after a date</div></div></div><span class="pill" style="background:#f1f0fa;color:var(--muted)">Jul 31</span></div>
+        <div class="row" style="justify-content:space-between"><div style="display:flex;align-items:center;gap:10px"><svg class="ic" viewBox="0 0 24 24" style="color:var(--muted)"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg><div><div style="font-size:13px;font-weight:600">Link expiry</div><div style="font-size:11px;color:var(--faint)">Stops working after a date</div></div></div><span class="pill" style="background:var(--panel2);color:var(--muted)">Jul 31</span></div>
         <div class="row" style="justify-content:space-between"><div style="display:flex;align-items:center;gap:10px"><svg class="ic" viewBox="0 0 24 24" style="color:var(--muted)"><path d="M12 3v12m0 0 4-4m-4 4-4-4M4 19h16"/></svg><div><div style="font-size:13px;font-weight:600">Allow downloads</div><div style="font-size:11px;color:var(--faint)">Viewers can save the file</div></div></div><span class="toggle off"></span></div>
       </div>
     </div>
