@@ -16,6 +16,7 @@ import {
   IconCheck,
   IconBookmark,
   IconBookmarkFilled,
+  IconUsers,
 } from "./icons";
 
 const modeIcon = {
@@ -31,6 +32,7 @@ export function VideoCard({
   onRename,
   onMove,
   onToggleSave,
+  onToggleTeam,
 }: {
   rec: Recording;
   folders?: Folder[];
@@ -38,6 +40,7 @@ export function VideoCard({
   onRename?: (id: string, title: string) => void;
   onMove?: (id: string, folder: string | null) => void;
   onToggleSave?: (id: string, saved: boolean) => void;
+  onToggleTeam?: (id: string, shared: boolean) => void;
 }) {
   const ModeIcon = modeIcon[rec.mode];
   const [menuOpen, setMenuOpen] = useState(false);
@@ -135,6 +138,12 @@ export function VideoCard({
               <IconEye width={13} height={13} />
               {rec.views}
             </span>
+            {rec.workspaceId && (
+              <span className="flex items-center gap-1 text-[var(--brand-2)]">
+                <IconUsers width={12} height={12} />
+                Team
+              </span>
+            )}
           </div>
         </div>
 
@@ -183,6 +192,18 @@ export function VideoCard({
                     <IconBookmark width={15} height={15} />
                   )}
                   {rec.saved ? "Remove from Watch later" : "Save to Watch later"}
+                </button>
+              )}
+              {onToggleTeam && (
+                <button
+                  onClick={() => {
+                    onToggleTeam(rec.id, !rec.workspaceId);
+                    setMenuOpen(false);
+                  }}
+                  className="menu-item"
+                >
+                  <IconUsers width={15} height={15} />
+                  {rec.workspaceId ? "Remove from team" : "Share to team"}
                 </button>
               )}
 

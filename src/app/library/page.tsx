@@ -11,7 +11,9 @@ import {
   listFolders,
   addFolder,
   setSaved,
+  isCloud,
 } from "@/lib/store";
+import { ensureMyWorkspace } from "@/lib/workspace";
 import type { Folder, Recording } from "@/lib/types";
 import { IconSearch, IconRecord, IconVideo, IconPlus } from "@/components/icons";
 
@@ -21,6 +23,7 @@ export default function LibraryPage() {
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState("");
   const [activeFolder, setActiveFolder] = useState<"all" | "none" | string>("all");
+  const [workspaceId, setWorkspaceId] = useState<string | null>(null);
 
   useEffect(() => {
     Promise.all([listRecordings(), listFolders()])
@@ -29,6 +32,11 @@ export default function LibraryPage() {
         setFolders(f);
       })
       .finally(() => setLoading(false));
+    if (isCloud()) {
+      ensureMyWorkspace()
+        .then((w) => setWorkspaceId(w?.id ?? null))
+        .catch(() => {});
+    }
   }, []);
 
   const filtered = useMemo(() => {
@@ -60,6 +68,12 @@ export default function LibraryPage() {
   async function handleToggleSave(id: string, saved: boolean) {
     setRecs((prev) => prev.map((r) => (r.id === id ? { ...r, saved } : r)));
     await setSaved(id, saved);
+  }
+
+  async function handleToggleTeam(id: string, shared: boolean) {
+    const wsid = shared ? workspaceId : null;
+    setRecs((prev) => prev.map((r) => (r.id === id ? { ...r, workspaceId: wsid } : r)));
+    await updateRecording(id, { workspaceId: wsid });
   }
 
   async function handleNewFolder() {
@@ -172,6 +186,7 @@ export default function LibraryPage() {
                   onRename={handleRename}
                   onMove={handleMove}
                   onToggleSave={handleToggleSave}
+                  onToggleTeam={workspaceId ? handleToggleTeam : undefined}
                 />
               ))}
             </div>
