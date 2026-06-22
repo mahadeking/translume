@@ -14,6 +14,7 @@ import {
   deleteComment,
   deleteRecording,
   incrementViews,
+  incrementCtaClicks,
   updateRecording,
   isCloud,
 } from "@/lib/store";
@@ -45,6 +46,10 @@ export function Watch({ id }: { id: string }) {
   const [deleting, setDeleting] = useState(false);
   const [myWorkspaceId, setMyWorkspaceId] = useState<string | null>(null);
   const [sharingTeam, setSharingTeam] = useState(false);
+  const [editingCta, setEditingCta] = useState(false);
+  const [ctaLabel, setCtaLabel] = useState("");
+  const [ctaUrl, setCtaUrl] = useState("");
+  const [savingCta, setSavingCta] = useState(false);
 
   const [name, setName] = useState("You");
   const [body, setBody] = useState("");
@@ -139,6 +144,44 @@ export function Watch({ id }: { id: string }) {
     } finally {
       setSharingTeam(false);
     }
+  }
+
+  function openCtaEditor() {
+    setCtaLabel(rec?.ctaLabel ?? "");
+    setCtaUrl(rec?.ctaUrl ?? "");
+    setEditingCta(true);
+  }
+
+  async function saveCta() {
+    if (!rec) return;
+    const label = ctaLabel.trim();
+    let url = ctaUrl.trim();
+    if (!url) return;
+    if (!/^https?:\/\//i.test(url)) url = `https://${url}`;
+    setSavingCta(true);
+    try {
+      await updateRecording(rec.id, { ctaLabel: label || "Learn more", ctaUrl: url });
+      setRec({ ...rec, ctaLabel: label || "Learn more", ctaUrl: url });
+      setEditingCta(false);
+    } finally {
+      setSavingCta(false);
+    }
+  }
+
+  async function clearCta() {
+    if (!rec) return;
+    setSavingCta(true);
+    try {
+      await updateRecording(rec.id, { ctaLabel: null, ctaUrl: null });
+      setRec({ ...rec, ctaLabel: null, ctaUrl: null });
+      setEditingCta(false);
+    } finally {
+      setSavingCta(false);
+    }
+  }
+
+  function trackCta() {
+    if (rec) incrementCtaClicks(rec.id).catch(() => {});
   }
 
   async function generateAI() {
@@ -281,6 +324,19 @@ export function Watch({ id }: { id: string }) {
             </div>
           )}
 
+          {rec.ctaUrl && (
+            <a
+              href={rec.ctaUrl}
+              target="_blank"
+              rel="noreferrer"
+              onClick={trackCta}
+              className="btn btn-primary mt-4 w-full justify-center py-3 text-base"
+            >
+              {rec.ctaLabel || "Learn more"}
+              <span aria-hidden>→</span>
+            </a>
+          )}
+
           <div className="mt-5">
             <h1 className="text-2xl font-semibold tracking-tight">{rec.title}</h1>
             <div className="mt-2 flex flex-wrap items-center gap-3 text-sm text-[var(--text-dim)]">
@@ -319,6 +375,72 @@ export function Watch({ id }: { id: string }) {
               )}
             </div>
           </div>
+
+          {/* Owner: call-to-action editor */}
+          {isOwner && (
+            <div className="card mt-5 p-5">
+              <div className="flex items-center justify-between gap-2">
+                <h2 className="text-sm font-semibold">Call to action</h2>
+                {(rec.ctaClicks ?? 0) > 0 && (
+                  <span className="text-xs text-[var(--text-faint)]">
+                    {rec.ctaClicks} {rec.ctaClicks === 1 ? "click" : "clicks"}
+                  </span>
+                )}
+              </div>
+
+              {editingCta ? (
+                <div className="mt-3 flex flex-col gap-2">
+                  <input
+                    value={ctaLabel}
+                    onChange={(e) => setCtaLabel(e.target.value)}
+                    placeholder="Button text (e.g. Book a call)"
+                    className="input"
+                  />
+                  <input
+                    value={ctaUrl}
+                    onChange={(e) => setCtaUrl(e.target.value)}
+                    placeholder="https://…"
+                    className="input"
+                  />
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={saveCta}
+                      disabled={savingCta || !ctaUrl.trim()}
+                      className="btn btn-primary"
+                    >
+                      {savingCta ? "Saving…" : "Save"}
+                    </button>
+                    <button onClick={() => setEditingCta(false)} className="btn btn-ghost">
+                      Cancel
+                    </button>
+                    {rec.ctaUrl && (
+                      <button
+                        onClick={clearCta}
+                        disabled={savingCta}
+                        className="btn btn-danger ml-auto"
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ) : rec.ctaUrl ? (
+                <div className="mt-3 flex items-center justify-between gap-3">
+                  <div className="min-w-0">
+                    <div className="truncate text-sm font-medium">{rec.ctaLabel}</div>
+                    <div className="truncate text-xs text-[var(--text-dim)]">{rec.ctaUrl}</div>
+                  </div>
+                  <button onClick={openCtaEditor} className="btn btn-ghost btn-sm shrink-0">
+                    Edit
+                  </button>
+                </div>
+              ) : (
+                <button onClick={openCtaEditor} className="btn btn-ghost mt-3">
+                  Add a call-to-action button
+                </button>
+              )}
+            </div>
+          )}
 
           {/* AI summary */}
           <div className="card mt-5 p-5">

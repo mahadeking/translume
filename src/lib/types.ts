@@ -37,6 +37,9 @@ export interface Recording {
   saved?: boolean; // bookmarked for "Watch later"
   owner?: string; // auth user id of the creator (cloud mode only)
   workspaceId?: string | null; // shared into this team workspace (cloud mode)
+  ctaLabel?: string | null; // call-to-action button text
+  ctaUrl?: string | null; // call-to-action button link
+  ctaClicks?: number; // how many times the CTA was clicked
 }
 
 export interface Comment {

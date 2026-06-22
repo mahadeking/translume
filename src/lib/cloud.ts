@@ -33,6 +33,9 @@ function rowToRecording(r: any): Recording {
     saved: r.saved ?? false,
     owner: r.owner ?? undefined,
     workspaceId: r.workspace_id ?? null,
+    ctaLabel: r.cta_label ?? null,
+    ctaUrl: r.cta_url ?? null,
+    ctaClicks: r.cta_clicks ?? 0,
   };
 }
 
@@ -146,6 +149,8 @@ export async function updateRecording(
   if (patch.trimEnd !== undefined) dbPatch.trim_end = patch.trimEnd;
   if (patch.saved !== undefined) dbPatch.saved = patch.saved;
   if (patch.workspaceId !== undefined) dbPatch.workspace_id = patch.workspaceId;
+  if (patch.ctaLabel !== undefined) dbPatch.cta_label = patch.ctaLabel;
+  if (patch.ctaUrl !== undefined) dbPatch.cta_url = patch.ctaUrl;
   if (Object.keys(dbPatch).length === 0) return getRecording(id);
 
   const { data, error } = await supabase
@@ -162,6 +167,10 @@ export async function incrementViews(id: string): Promise<void> {
   const supabase = getSupabase();
   // Atomic increment via a SQL function (see supabase/schema.sql).
   await supabase.rpc("increment_views", { rec_id: id });
+}
+
+export async function incrementCtaClicks(id: string): Promise<void> {
+  await getSupabase().rpc("increment_cta_clicks", { rec_id: id });
 }
 
 export async function deleteRecording(id: string): Promise<void> {

@@ -81,3 +81,8 @@ export function setSaved(id: string, saved: boolean): Promise<void> {
 export function listWorkspaceRecordings(workspaceId: string): Promise<Recording[]> {
   return isCloud() ? cloud.listWorkspaceRecordings(workspaceId) : Promise.resolve([]);
 }
+
+/** Count a click on a recording's call-to-action button (cloud only). */
+export function incrementCtaClicks(id: string): Promise<void> {
+  return isCloud() ? cloud.incrementCtaClicks(id) : Promise.resolve();
+}
