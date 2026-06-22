@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Translume — Product Overview</title>
+<style>
+  :root{
+    --bg:#07070b; --bg2:#0c0c14;
+    --panel:rgba(255,255,255,0.04); --panel2:rgba(255,255,255,0.07);
+    --border:rgba(255,255,255,0.10); --border2:rgba(255,255,255,0.17);
+    --text:#ececf3; --dim:#a7a7b8; --faint:#71718a;
+    --brand:#7c6cff; --brand2:#c75cff; --brand3:#5ad1ff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:
+      radial-gradient(50rem 40rem at 12% -5%, rgba(124,108,255,0.16), transparent 60%),
+      radial-gradient(45rem 40rem at 100% 0%, rgba(199,92,255,0.12), transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.65; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:980px;margin:0 auto;padding:0 24px}
+  a{color:inherit;text-decoration:none}
+  .grad{background:linear-gradient(120deg,#b9adff,var(--brand2) 55%,var(--brand3));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .btn{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:.95rem;padding:.7rem 1.2rem;border-radius:12px;border:1px solid transparent;background:linear-gradient(120deg,var(--brand),var(--brand2));color:#fff;box-shadow:0 8px 30px -10px rgba(124,108,255,.7)}
+  .btn-ghost{background:var(--panel);border:1px solid var(--border);color:var(--text)}
+
+  header.bar{position:sticky;top:0;z-index:10;backdrop-filter:blur(16px);background:rgba(7,7,11,.6);border-bottom:1px solid var(--border)}
+  .bar .wrap{display:flex;align-items:center;justify-content:space-between;padding-top:14px;padding-bottom:14px}
+  .logo{display:flex;align-items:center;gap:11px;font-size:1.15rem;font-weight:700;letter-spacing:-.01em}
+  .logo .mark{position:relative;display:grid;place-items:center;width:38px;height:38px;border-radius:11px;background:linear-gradient(120deg,var(--brand),var(--brand2));box-shadow:0 8px 24px -8px rgba(124,108,255,.6)}
+  .logo .mark::after{content:"";position:absolute;top:-3px;right:-3px;width:11px;height:11px;border-radius:50%;background:#ff5a78;border:2px solid var(--bg)}
+
+  section{padding:60px 0}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:.8rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--dim);background:var(--panel);border:1px solid var(--border);padding:.4rem .85rem;border-radius:999px}
+  h1{font-size:3.1rem;line-height:1.05;letter-spacing:-.02em;font-weight:700;margin:22px 0 0}
+  h2{font-size:1.9rem;letter-spacing:-.02em;font-weight:700;margin-bottom:8px}
+  h3{font-size:1.08rem;font-weight:650;margin-bottom:4px}
+  .lead{font-size:1.18rem;color:var(--dim);max-width:42ch;margin-top:18px}
+  .sub{color:var(--dim);max-width:60ch;margin-bottom:30px}
+  .hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+  .pill{display:inline-flex;align-items:center;gap:7px;font-size:.85rem;color:var(--dim)}
+  .dot{width:8px;height:8px;border-radius:50%;background:#4ade80;box-shadow:0 0 10px #4ade80}
+
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:22px}
+  .grid{display:grid;gap:16px}
+  .g2{grid-template-columns:repeat(2,1fr)}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  .ic{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:var(--panel2);color:var(--brand);margin-bottom:14px}
+  .ic svg{width:22px;height:22px}
+  .muted{color:var(--dim);font-size:.95rem}
+
+  .step{display:flex;gap:16px;align-items:flex-start}
+  .step .num{flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:11px;font-weight:700;background:linear-gradient(120deg,var(--brand),var(--brand2));color:#fff}
+
+  .tag{display:inline-flex;align-items:center;gap:7px;font-size:.9rem;color:var(--dim);background:var(--panel);border:1px solid var(--border);padding:.5rem .9rem;border-radius:999px}
+  .tags{display:flex;flex-wrap:wrap;gap:10px}
+
+  .li{display:flex;align-items:center;gap:10px;padding:7px 0;color:var(--text)}
+  .li svg{flex:none;width:18px;height:18px}
+  .ck{color:#4ade80}.cl{color:var(--faint)}
+
+  .cta{background:linear-gradient(120deg,rgba(124,108,255,.16),rgba(199,92,255,.12));border:1px solid var(--border2);border-radius:24px;padding:48px;text-align:center}
+
+  footer{border-top:1px solid var(--border);padding:30px 0;color:var(--faint);font-size:.9rem}
+  .foot{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+
+  @media (max-width:760px){
+    h1{font-size:2.3rem}.g2,.g3,.g4{grid-template-columns:1fr}
+    section{padding:44px 0}.cta{padding:32px 20px}
+  }
+  @media print{
+    body{background:#fff;color:#111}
+    .grad{color:#6a4bff;-webkit-text-fill-color:#6a4bff}
+    .card,.cta{border-color:#ddd;background:#fafafa}
+    header.bar{position:static}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap">
+    <div class="logo">
+      <span class="mark">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M7 5v14l11-7L7 5Z" fill="#fff"/></svg>
+      </span>
+      Translume
+    </div>
+    <a class="btn" href="https://translume.vercel.app">Open the app</a>
+  </div>
+</header>
+
+<section class="wrap" style="padding-top:64px">
+  <span class="eyebrow"><span class="dot"></span> Live product overview</span>
+  <h1>Talk through it.<br><span class="grad">Don't type it all out.</span></h1>
+  <p class="lead">Translume is the fastest, best-looking way to send a video instead of a long message or a meeting.</p>
+  <div class="hero-actions">
+    <a class="btn" href="https://translume.vercel.app">Try it free</a>
+    <a class="btn btn-ghost" href="#how">See how it works</a>
+  </div>
+  <div style="margin-top:22px" class="pill"><span class="dot"></span> Live at translume.vercel.app</div>
+</section>
+
+<section class="wrap" style="padding-top:10px">
+  <div class="card" style="padding:30px">
+    <h2>What is Translume?</h2>
+    <p class="muted" style="max-width:75ch;font-size:1.05rem">
+      It's a screen &amp; camera recorder that lives in your browser. You hit record, talk through whatever's on
+      your screen, and the moment you stop you get a shareable link. The person you send it to can watch it any
+      time and leave comments pinned to the exact moment in the video — so a five-minute explanation replaces a
+      long email or a scheduled call. Think of it as a friendlier, more modern take on async video at work.
+    </p>
+  </div>
+</section>
+
+<section class="wrap" id="how">
+  <h2>How it works</h2>
+  <p class="sub">Four simple steps — most messages take under a minute.</p>
+  <div class="grid g2">
+    <div class="card step"><div class="num">1</div><div><h3>Record</h3><p class="muted">Capture your screen, your camera, or both. A little webcam bubble follows along, and a 3‑2‑1 countdown gets you ready.</p></div></div>
+    <div class="card step"><div class="num">2</div><div><h3>Get an instant link</h3><p class="muted">Stop recording and your video is ready immediately — no upload wait. Copy the link or embed it anywhere.</p></div></div>
+    <div class="card step"><div class="num">3</div><div><h3>People reply on the video</h3><p class="muted">Viewers leave comments and emoji reactions pinned to the exact second, so feedback is crystal clear.</p></div></div>
+    <div class="card step"><div class="num">4</div><div><h3>AI does the busywork</h3><p class="muted">Translume writes a title, a summary, and chapter markers automatically — plus a full transcript and captions.</p></div></div>
+  </div>
+</section>
+
+<section class="wrap">
+  <h2>Everything it does</h2>
+  <p class="sub">A complete toolkit — built to match the best of the category, with a cleaner design.</p>
+  <div class="grid g3">
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="4" width="19" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div><h3>Record anything</h3><p class="muted">Screen, camera, or both, with a draggable webcam bubble and pause/resume.</p></div>
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 15 15 9M11 6.5 13 4.5a4 4 0 0 1 6 6l-2 2M13 17.5 11 19.5a4 4 0 0 1-6-6l2-2"/></svg></div><h3>Instant share &amp; embed</h3><p class="muted">A beautiful watch page is ready the moment you stop. Share a link or embed it.</p></div>
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12a8 8 0 0 1-11.5 7.2L4 20l1-4.2A8 8 0 1 1 21 12Z"/></svg></div><h3>Timeline conversations</h3><p class="muted">Comments and reactions pinned to the exact second of the video.</p></div>
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Z"/></svg></div><h3>AI summaries</h3><p class="muted">Auto title, summary, and clickable chapters — generated by Claude.</p></div>
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div><h3>Transcript &amp; captions</h3><p class="muted">Every word transcribed automatically, with on-screen captions.</p></div>
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><path d="M20 7H10l-2 5 2 5h10"/></svg></div><h3>Trim &amp; thumbnails</h3><p class="muted">Top-and-tail your clip and pick a cover frame — nothing destructive.</p></div>
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></div><h3>Organized library</h3><p class="muted">Folders, search, watch‑later, recent, and an insights view.</p></div>
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="9" r="3.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0M16 6.2a3.2 3.2 0 0 1 0 6.1M17.5 19a5.5 5.5 0 0 0-2.3-4.5"/></svg></div><h3>Team workspaces</h3><p class="muted">Invite teammates by link and share into a common team library.</p></div>
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div><h3>Access controls</h3><p class="muted">Optional password, link expiry, and download on/off — all per video.</p></div>
+  </div>
+</section>
+
+<section class="wrap">
+  <h2>Who it's for</h2>
+  <p class="sub">Anywhere a quick video beats typing or meeting.</p>
+  <div class="grid g4">
+    <div class="card"><h3>Product &amp; design</h3><p class="muted">Walk through mockups and demos.</p></div>
+    <div class="card"><h3>Support &amp; success</h3><p class="muted">Answer customers with a clip.</p></div>
+    <div class="card"><h3>Sales</h3><p class="muted">Personal video intros &amp; follow‑ups.</p></div>
+    <div class="card"><h3>Onboarding</h3><p class="muted">Reusable how‑to walkthroughs.</p></div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="grid g2">
+    <div class="card">
+      <h2 style="font-size:1.5rem">Under the hood</h2>
+      <p class="muted" style="margin-bottom:16px">Modern, reliable, and built to scale.</p>
+      <div class="tags">
+        <span class="tag">Next.js 16</span>
+        <span class="tag">React 19</span>
+        <span class="tag">Tailwind v4</span>
+        <span class="tag">TypeScript</span>
+        <span class="tag">Supabase</span>
+        <span class="tag">Claude Opus 4.8</span>
+        <span class="tag">Vercel</span>
+      </div>
+      <p class="muted" style="margin-top:16px;font-size:.9rem">Accounts, database, file storage, and security handled by Supabase. AI by Claude. Auto‑deployed on Vercel.</p>
+    </div>
+    <div class="card">
+      <h2 style="font-size:1.5rem">Status &amp; what's next</h2>
+      <p class="muted" style="margin-bottom:12px">Shipped and live today:</p>
+      <div class="li"><svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m4 12 5 5 11-11"/></svg>Recording studio &amp; player</div>
+      <div class="li"><svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m4 12 5 5 11-11"/></svg>AI summaries, transcript, captions</div>
+      <div class="li"><svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m4 12 5 5 11-11"/></svg>Accounts + Google sign‑in</div>
+      <div class="li"><svg class="ck" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m4 12 5 5 11-11"/></svg>Team workspaces &amp; access controls</div>
+      <p class="muted" style="margin:16px 0 12px">On the roadmap:</p>
+      <div class="li cl"><svg class="cl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Viewer analytics (watch %, drop‑off)</div>
+      <div class="li cl"><svg class="cl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>AI workflows (video → doc / email)</div>
+      <div class="li cl"><svg class="cl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Meeting recording</div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="cta">
+    <h2>Send your first one in under a minute.</h2>
+    <p class="muted" style="max-width:48ch;margin:8px auto 24px">Hit record, talk through your screen, share the link. That's it.</p>
+    <a class="btn" href="https://translume.vercel.app" style="font-size:1.05rem;padding:.85rem 1.6rem">Start for free</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <div class="logo" style="font-size:1rem"><span class="mark" style="width:30px;height:30px"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M7 5v14l11-7L7 5Z" fill="#fff"/></svg></span>Translume</div>
+    <span>A modern take on async video messaging · translume.vercel.app</span>
+  </div>
+</footer>
+
+</body>
+</html>
