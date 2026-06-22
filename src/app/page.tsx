@@ -44,6 +44,60 @@ const features = [
   },
 ];
 
+const LOGOS = [
+  {
+    name: "Nimbus",
+    mark: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+        <path d="M7 18a4 4 0 0 1 0-8 5 5 0 0 1 9.6-1.6A3.5 3.5 0 0 1 17 18H7Z" />
+      </svg>
+    ),
+  },
+  {
+    name: "Flowbase",
+    mark: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+        <rect x="3" y="11" width="3.5" height="9" rx="1.5" />
+        <rect x="10" y="6" width="3.5" height="14" rx="1.5" />
+        <rect x="17" y="3" width="3.5" height="17" rx="1.5" />
+      </svg>
+    ),
+  },
+  {
+    name: "Hexa",
+    mark: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+        <path d="M12 3l7 4v8l-7 4-7-4V7z" />
+      </svg>
+    ),
+  },
+  {
+    name: "Orbit",
+    mark: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+        <circle cx="12" cy="12" r="8" />
+        <circle cx="12" cy="12" r="2.6" fill="currentColor" stroke="none" />
+      </svg>
+    ),
+  },
+  {
+    name: "Vela",
+    mark: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+        <path d="M5 19 19 5v14z" />
+      </svg>
+    ),
+  },
+  {
+    name: "Pulse",
+    mark: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+        <path d="M3 12h4l2-5 3 10 2-5h4" />
+      </svg>
+    ),
+  },
+];
+
 export default function Home() {
   return (
     <div className="min-h-screen">
@@ -133,13 +187,14 @@ export default function Home() {
             Thousands of product and brand teams use{" "}
             <span className="brand-text">Translume</span> to ignite collaboration
           </h2>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-x-12 gap-y-6 opacity-55">
-            {["Northwind", "Quanta", "Lumen", "Vertex", "Helio", "Atlas"].map((name) => (
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-x-10 gap-y-7 text-[var(--text-faint)]">
+            {LOGOS.map((l) => (
               <span
-                key={name}
-                className="text-xl font-bold tracking-tight text-[var(--text-dim)] sm:text-2xl"
+                key={l.name}
+                className="flex items-center gap-2 text-lg font-bold tracking-tight transition hover:text-[var(--text-dim)]"
               >
-                {name}
+                {l.mark}
+                {l.name}
               </span>
             ))}
           </div>
