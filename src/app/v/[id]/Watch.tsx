@@ -36,6 +36,10 @@ import {
 
 const QUICK_EMOJI = ["👍", "❤️", "😂", "🎉", "🤔", "👏"];
 
+// Call-to-action is hidden for now. Flip to true to bring the feature back
+// (owner editor + public CTA button); the data + API are already in place.
+const CTA_ENABLED = false;
+
 /** ISO timestamp → value for a <input type="datetime-local"> (local time). */
 function toLocalInput(iso: string): string {
   const d = new Date(iso);
@@ -479,7 +483,7 @@ export function Watch({ id }: { id: string }) {
             </div>
           )}
 
-          {rec.ctaUrl && (
+          {CTA_ENABLED && rec.ctaUrl && (
             <a
               href={rec.ctaUrl}
               target="_blank"
@@ -532,7 +536,7 @@ export function Watch({ id }: { id: string }) {
           </div>
 
           {/* Owner: call-to-action editor */}
-          {isOwner && (
+          {CTA_ENABLED && isOwner && (
             <div className="card mt-5 p-5">
               <div className="flex items-center justify-between gap-2">
                 <h2 className="text-sm font-semibold">Call to action</h2>
