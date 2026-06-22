@@ -233,3 +233,45 @@ export const IconClose = (p: IconProps) => (
     <path d="M6 6l12 12M18 6 6 18" />
   </svg>
 );
+
+export const IconBell = (p: IconProps) => (
+  <svg {...base(p)}>
+    <path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6Z" />
+    <path d="M10 20a2 2 0 0 0 4 0" />
+  </svg>
+);
+
+export const IconCalendar = (p: IconProps) => (
+  <svg {...base(p)}>
+    <rect x="3.5" y="5" width="17" height="16" rx="2.5" />
+    <path d="M3.5 9.5h17M8 3.5v3M16 3.5v3" />
+  </svg>
+);
+
+export const IconUsers = (p: IconProps) => (
+  <svg {...base(p)}>
+    <circle cx="9" cy="9" r="3.2" />
+    <path d="M3.5 19a5.5 5.5 0 0 1 11 0" />
+    <path d="M16 6.2a3.2 3.2 0 0 1 0 6.1M17.5 19a5.5 5.5 0 0 0-2.3-4.5" />
+  </svg>
+);
+
+export const IconKeyboard = (p: IconProps) => (
+  <svg {...base(p)}>
+    <rect x="2.5" y="6" width="19" height="12" rx="2.5" />
+    <path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M8 14h8" />
+  </svg>
+);
+
+export const IconPuzzle = (p: IconProps) => (
+  <svg {...base(p)}>
+    <path d="M10 4.5a1.5 1.5 0 0 1 3 0c0 .8.5 1.5 1.5 1.5H17a1 1 0 0 1 1 1v2c0 1 .7 1.5 1.5 1.5a1.5 1.5 0 0 1 0 3c-.8 0-1.5.5-1.5 1.5V18a1 1 0 0 1-1 1h-2c-1 0-1.5.7-1.5 1.5a1.5 1.5 0 0 1-3 0c0-.8-.5-1.5-1.5-1.5H7a1 1 0 0 1-1-1v-2.5C6 14.5 5.3 14 4.5 14a1.5 1.5 0 0 1 0-3c.8 0 1.5-.5 1.5-1.5V7a1 1 0 0 1 1-1h1.5C9.5 6 10 5.3 10 4.5Z" />
+  </svg>
+);
+
+export const IconMail = (p: IconProps) => (
+  <svg {...base(p)}>
+    <rect x="3" y="5" width="18" height="14" rx="2.5" />
+    <path d="m4 7 8 6 8-6" />
+  </svg>
+);

@@ -28,3 +28,8 @@ export async function currentUserId(): Promise<string | null> {
   const { data } = await getSupabase().auth.getUser();
   return data.user?.id ?? null;
 }
+
+/** Save the user's display name to auth metadata (full_name). */
+export async function updateDisplayName(name: string) {
+  return getSupabase().auth.updateUser({ data: { full_name: name } });
+}
