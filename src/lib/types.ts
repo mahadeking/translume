@@ -40,6 +40,9 @@ export interface Recording {
   ctaLabel?: string | null; // call-to-action button text
   ctaUrl?: string | null; // call-to-action button link
   ctaClicks?: number; // how many times the CTA was clicked
+  expiresAt?: string | null; // ISO; link stops working after this (owner exempt)
+  allowDownload?: boolean; // viewers may download the file
+  passwordProtected?: boolean; // viewers must enter a password to watch
 }
 
 export interface Comment {

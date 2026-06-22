@@ -86,3 +86,13 @@ export function listWorkspaceRecordings(workspaceId: string): Promise<Recording[
 export function incrementCtaClicks(id: string): Promise<void> {
   return isCloud() ? cloud.incrementCtaClicks(id) : Promise.resolve();
 }
+
+/** Set (or clear, with null) a recording's view password (cloud only). */
+export function setRecordingPassword(id: string, password: string | null): Promise<void> {
+  return isCloud() ? cloud.setRecordingPassword(id, password) : Promise.resolve();
+}
+
+/** Verify a recording's view password (cloud only; true when no password set). */
+export function checkRecordingPassword(id: string, password: string): Promise<boolean> {
+  return isCloud() ? cloud.checkRecordingPassword(id, password) : Promise.resolve(true);
+}

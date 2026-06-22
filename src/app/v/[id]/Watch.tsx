@@ -15,6 +15,8 @@ import {
   deleteRecording,
   incrementViews,
   incrementCtaClicks,
+  setRecordingPassword,
+  checkRecordingPassword,
   updateRecording,
   isCloud,
 } from "@/lib/store";
@@ -34,6 +36,15 @@ import {
 
 const QUICK_EMOJI = ["👍", "❤️", "😂", "🎉", "🤔", "👏"];
 
+/** ISO timestamp → value for a <input type="datetime-local"> (local time). */
+function toLocalInput(iso: string): string {
+  const d = new Date(iso);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(
+    d.getHours()
+  )}:${pad(d.getMinutes())}`;
+}
+
 export function Watch({ id }: { id: string }) {
   const router = useRouter();
   const playerRef = useRef<PlayerHandle | null>(null);
@@ -50,6 +61,15 @@ export function Watch({ id }: { id: string }) {
   const [ctaLabel, setCtaLabel] = useState("");
   const [ctaUrl, setCtaUrl] = useState("");
   const [savingCta, setSavingCta] = useState(false);
+  // Access controls
+  const [unlocked, setUnlocked] = useState(false);
+  const [pwInput, setPwInput] = useState("");
+  const [pwError, setPwError] = useState<string | null>(null);
+  const [pwChecking, setPwChecking] = useState(false);
+  const [editingAccess, setEditingAccess] = useState(false);
+  const [savingAccess, setSavingAccess] = useState(false);
+  const [accPassword, setAccPassword] = useState("");
+  const [accExpiry, setAccExpiry] = useState("");
 
   const [name, setName] = useState("You");
   const [body, setBody] = useState("");
@@ -61,8 +81,8 @@ export function Watch({ id }: { id: string }) {
   const [showTranscript, setShowTranscript] = useState(false);
   const [captionsOn, setCaptionsOn] = useState(false);
 
+  // 1) Load metadata + ownership (no media yet — access may be gated).
   useEffect(() => {
-    let objectUrl: string | null = null;
     (async () => {
       const r = await getRecording(id);
       if (!r) {
@@ -71,26 +91,44 @@ export function Watch({ id }: { id: string }) {
       }
       setRec(r);
       if (r.ai) setAi(r.ai);
-      // You can delete a recording you own. In local mode every recording lives
-      // in your own browser, so it's always yours; in cloud mode compare owners.
+      // You can delete/manage a recording you own. In local mode every recording
+      // lives in your own browser; in cloud mode compare owners.
       if (!isCloud()) setIsOwner(true);
       else {
         const me = await currentUserId();
         setIsOwner(!!me && r.owner === me);
       }
       pushRecent(id);
-      objectUrl = await getObjectURL(id);
-      setUrl(objectUrl);
-      setComments(await listComments(id));
-      incrementViews(id);
       setLoading(false);
     })();
     const saved = localStorage.getItem("translume_name");
     if (saved) setName(saved);
-    return () => {
-      if (objectUrl) URL.revokeObjectURL(objectUrl);
-    };
   }, [id]);
+
+  const expired =
+    !!rec?.expiresAt && Date.now() > new Date(rec.expiresAt).getTime();
+  const blockedByExpiry = expired && !isOwner;
+  const locked = !!rec?.passwordProtected && !isOwner && !unlocked;
+  const accessGranted = !!rec && !blockedByExpiry && !locked;
+
+  // 2) Load the video + comments only once access is granted.
+  useEffect(() => {
+    if (!accessGranted || !rec) return;
+    let objectUrl: string | null = null;
+    let cancelled = false;
+    (async () => {
+      objectUrl = await getObjectURL(rec.id);
+      if (cancelled) return;
+      setUrl(objectUrl);
+      setComments(await listComments(rec.id));
+      incrementViews(rec.id);
+    })();
+    return () => {
+      cancelled = true;
+      if (objectUrl && objectUrl.startsWith("blob:")) URL.revokeObjectURL(objectUrl);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [accessGranted, rec?.id]);
 
   // When you own this recording, load your workspace so you can share it.
   useEffect(() => {
@@ -184,6 +222,63 @@ export function Watch({ id }: { id: string }) {
     if (rec) incrementCtaClicks(rec.id).catch(() => {});
   }
 
+  async function unlock() {
+    if (!rec) return;
+    setPwChecking(true);
+    setPwError(null);
+    try {
+      const ok = await checkRecordingPassword(rec.id, pwInput);
+      if (ok) setUnlocked(true);
+      else setPwError("Incorrect password.");
+    } catch {
+      setPwError("Couldn't verify the password.");
+    } finally {
+      setPwChecking(false);
+    }
+  }
+
+  function openAccessEditor() {
+    setAccPassword("");
+    setAccExpiry(rec?.expiresAt ? toLocalInput(rec.expiresAt) : "");
+    setEditingAccess(true);
+  }
+
+  async function saveAccess() {
+    if (!rec) return;
+    setSavingAccess(true);
+    try {
+      const expiresAt = accExpiry ? new Date(accExpiry).toISOString() : null;
+      await updateRecording(rec.id, { expiresAt });
+      let passwordProtected = rec.passwordProtected;
+      if (accPassword.trim()) {
+        await setRecordingPassword(rec.id, accPassword.trim());
+        passwordProtected = true;
+      }
+      setRec({ ...rec, expiresAt, passwordProtected });
+      setEditingAccess(false);
+    } finally {
+      setSavingAccess(false);
+    }
+  }
+
+  async function clearPassword() {
+    if (!rec) return;
+    setSavingAccess(true);
+    try {
+      await setRecordingPassword(rec.id, null);
+      setRec({ ...rec, passwordProtected: false });
+    } finally {
+      setSavingAccess(false);
+    }
+  }
+
+  async function toggleDownload() {
+    if (!rec) return;
+    const next = !(rec.allowDownload ?? true);
+    await updateRecording(rec.id, { allowDownload: next });
+    setRec({ ...rec, allowDownload: next });
+  }
+
   async function generateAI() {
     if (!rec) return;
     setAiBusy(true);
@@ -240,7 +335,7 @@ export function Watch({ id }: { id: string }) {
     );
   }
 
-  if (!rec || !url) {
+  if (!rec) {
     return (
       <div className="grid min-h-screen place-items-center px-6 text-center">
         <div className="card max-w-md p-10">
@@ -255,6 +350,65 @@ export function Watch({ id }: { id: string }) {
             Back to library
           </Link>
         </div>
+      </div>
+    );
+  }
+
+  if (blockedByExpiry) {
+    return (
+      <div className="grid min-h-screen place-items-center px-6 text-center">
+        <div className="card max-w-md p-10">
+          <h1 className="text-xl font-semibold">This link has expired</h1>
+          <p className="mt-2 text-sm text-[var(--text-dim)]">
+            The owner set this share link to expire. Ask them for a fresh link.
+          </p>
+          <Link href="/" className="btn btn-ghost mt-6">
+            Go home
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  if (locked) {
+    return (
+      <div className="grid min-h-screen place-items-center px-6">
+        <div className="card fade-up w-full max-w-sm p-8 text-center">
+          <div className="flex justify-center">
+            <Logo />
+          </div>
+          <h1 className="mt-6 text-xl font-semibold">Password required</h1>
+          <p className="mt-2 text-sm text-[var(--text-dim)]">
+            This recording is protected. Enter the password to watch.
+          </p>
+          <input
+            type="password"
+            value={pwInput}
+            onChange={(e) => setPwInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") unlock();
+            }}
+            placeholder="Password"
+            className="input mt-5"
+            autoFocus
+          />
+          {pwError && <p className="mt-2 text-sm text-[#ff8aa0]">{pwError}</p>}
+          <button
+            onClick={unlock}
+            disabled={pwChecking || !pwInput}
+            className="btn btn-primary mt-4 w-full"
+          >
+            {pwChecking ? "Checking…" : "Unlock"}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!url) {
+    return (
+      <div className="grid min-h-screen place-items-center text-[var(--text-dim)]">
+        Loading…
       </div>
     );
   }
@@ -297,6 +451,7 @@ export function Watch({ id }: { id: string }) {
         recId={rec.id}
         title={rec.title}
         downloadUrl={url}
+        allowDownload={rec.allowDownload !== false || isOwner}
       />
 
       <div className="mx-auto grid max-w-7xl gap-6 px-5 pb-12 sm:px-8 lg:grid-cols-[1fr_360px]">
@@ -438,6 +593,125 @@ export function Watch({ id }: { id: string }) {
                 <button onClick={openCtaEditor} className="btn btn-ghost mt-3">
                   Add a call-to-action button
                 </button>
+              )}
+            </div>
+          )}
+
+          {/* Owner: access controls */}
+          {isOwner && (
+            <div className="card mt-5 p-5">
+              <div className="flex items-center justify-between gap-2">
+                <h2 className="text-sm font-semibold">Access controls</h2>
+                {!editingAccess && (
+                  <button
+                    onClick={openAccessEditor}
+                    className="btn btn-ghost btn-sm"
+                  >
+                    Edit
+                  </button>
+                )}
+              </div>
+
+              {/* Download toggle (always visible) */}
+              <div className="mt-3 flex items-center justify-between gap-4">
+                <div>
+                  <div className="text-sm font-medium">Allow downloads</div>
+                  <div className="text-xs text-[var(--text-dim)]">
+                    Viewers can save the video file
+                  </div>
+                </div>
+                <button
+                  role="switch"
+                  aria-checked={rec.allowDownload !== false}
+                  onClick={toggleDownload}
+                  className={`relative h-6 w-11 shrink-0 rounded-full transition ${
+                    rec.allowDownload !== false
+                      ? "bg-[var(--brand)]"
+                      : "bg-[var(--panel-strong)]"
+                  }`}
+                >
+                  <span
+                    className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-all ${
+                      rec.allowDownload !== false ? "left-[1.375rem]" : "left-0.5"
+                    }`}
+                  />
+                </button>
+              </div>
+
+              {/* Status line */}
+              <div className="mt-3 flex flex-wrap gap-2 text-xs">
+                <span className={`chip ${rec.passwordProtected ? "border-[var(--brand)] text-[var(--brand)]" : ""}`}>
+                  {rec.passwordProtected ? "🔒 Password set" : "No password"}
+                </span>
+                <span className={`chip ${rec.expiresAt ? "border-[var(--brand)] text-[var(--brand)]" : ""}`}>
+                  {rec.expiresAt
+                    ? `Expires ${new Date(rec.expiresAt).toLocaleDateString()}`
+                    : "No expiry"}
+                </span>
+              </div>
+
+              {editingAccess && (
+                <div className="mt-4 flex flex-col gap-3 border-t border-[var(--border)] pt-4">
+                  <div>
+                    <label className="mb-1.5 block text-xs font-medium text-[var(--text-dim)]">
+                      {rec.passwordProtected ? "Change password" : "Set a password"}
+                    </label>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="text"
+                        value={accPassword}
+                        onChange={(e) => setAccPassword(e.target.value)}
+                        placeholder={rec.passwordProtected ? "New password" : "Password"}
+                        className="input"
+                      />
+                      {rec.passwordProtected && (
+                        <button
+                          onClick={clearPassword}
+                          disabled={savingAccess}
+                          className="btn btn-ghost btn-sm shrink-0"
+                        >
+                          Remove
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                  <div>
+                    <label className="mb-1.5 block text-xs font-medium text-[var(--text-dim)]">
+                      Link expiry
+                    </label>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="datetime-local"
+                        value={accExpiry}
+                        onChange={(e) => setAccExpiry(e.target.value)}
+                        className="input"
+                      />
+                      {accExpiry && (
+                        <button
+                          onClick={() => setAccExpiry("")}
+                          className="btn btn-ghost btn-sm shrink-0"
+                        >
+                          Clear
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={saveAccess}
+                      disabled={savingAccess}
+                      className="btn btn-primary"
+                    >
+                      {savingAccess ? "Saving…" : "Save"}
+                    </button>
+                    <button
+                      onClick={() => setEditingAccess(false)}
+                      className="btn btn-ghost"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
               )}
             </div>
           )}

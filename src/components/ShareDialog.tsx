@@ -9,12 +9,14 @@ export function ShareDialog({
   recId,
   title,
   downloadUrl,
+  allowDownload = true,
 }: {
   open: boolean;
   onClose: () => void;
   recId: string;
   title: string;
   downloadUrl: string | null;
+  allowDownload?: boolean;
 }) {
   const [origin, setOrigin] = useState("");
   const [copied, setCopied] = useState<"link" | "embed" | null>(null);
@@ -89,7 +91,7 @@ export function ShareDialog({
         </button>
 
         <div className="mt-5 flex items-center justify-between border-t border-[var(--border)] pt-4">
-          {downloadUrl ? (
+          {downloadUrl && allowDownload ? (
             <a
               href={downloadUrl}
               download={`${title.replace(/[^a-z0-9]+/gi, "-")}.webm`}

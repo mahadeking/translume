@@ -36,6 +36,9 @@ function rowToRecording(r: any): Recording {
     ctaLabel: r.cta_label ?? null,
     ctaUrl: r.cta_url ?? null,
     ctaClicks: r.cta_clicks ?? 0,
+    expiresAt: r.expires_at ?? null,
+    allowDownload: r.allow_download ?? true,
+    passwordProtected: r.password_protected ?? false,
   };
 }
 
@@ -151,6 +154,8 @@ export async function updateRecording(
   if (patch.workspaceId !== undefined) dbPatch.workspace_id = patch.workspaceId;
   if (patch.ctaLabel !== undefined) dbPatch.cta_label = patch.ctaLabel;
   if (patch.ctaUrl !== undefined) dbPatch.cta_url = patch.ctaUrl;
+  if (patch.expiresAt !== undefined) dbPatch.expires_at = patch.expiresAt;
+  if (patch.allowDownload !== undefined) dbPatch.allow_download = patch.allowDownload;
   if (Object.keys(dbPatch).length === 0) return getRecording(id);
 
   const { data, error } = await supabase
@@ -171,6 +176,23 @@ export async function incrementViews(id: string): Promise<void> {
 
 export async function incrementCtaClicks(id: string): Promise<void> {
   await getSupabase().rpc("increment_cta_clicks", { rec_id: id });
+}
+
+export async function setRecordingPassword(id: string, password: string | null): Promise<void> {
+  const { error } = await getSupabase().rpc("set_recording_password", {
+    rec_id: id,
+    pw: password,
+  });
+  if (error) throw error;
+}
+
+export async function checkRecordingPassword(id: string, password: string): Promise<boolean> {
+  const { data, error } = await getSupabase().rpc("check_recording_password", {
+    rec_id: id,
+    pw: password,
+  });
+  if (error) throw error;
+  return Boolean(data);
 }
 
 export async function deleteRecording(id: string): Promise<void> {
