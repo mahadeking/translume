@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Logo } from "@/components/Logo";
+import { LandingNav } from "@/components/LandingNav";
 import {
   IconRecord,
   IconScreen,
@@ -49,22 +50,7 @@ export default function Home() {
       <header className="sticky top-0 z-40 border-b border-[var(--border)] glass">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3.5 sm:px-6">
           <Logo />
-          <nav className="hidden items-center gap-8 text-sm font-medium text-[var(--text-dim)] md:flex">
-            <a href="#features" className="transition hover:text-[var(--text)]">
-              Features
-            </a>
-            <a href="#demo" className="transition hover:text-[var(--text)]">
-              Demo
-            </a>
-            <a
-              href="https://github.com/mahadeking/translume"
-              target="_blank"
-              rel="noreferrer"
-              className="transition hover:text-[var(--text)]"
-            >
-              GitHub
-            </a>
-          </nav>
+          <LandingNav />
           <div className="flex items-center gap-1.5 sm:gap-2">
             <Link href="/login" className="btn btn-ghost btn-sm">
               Sign in
@@ -103,10 +89,10 @@ export default function Home() {
             Record your first Translume
           </Link>
           <Link
-            href="/library"
+            href="/login?mode=signup"
             className="btn btn-ghost w-full justify-center px-6 py-3 text-base sm:w-auto"
           >
-            Open library
+            Start for free
           </Link>
         </div>
         <p className="mt-4 text-sm text-[var(--text-faint)]">
@@ -137,6 +123,27 @@ export default function Home() {
               />
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Social proof */}
+      <section className="border-y border-[var(--border)] py-14">
+        <div className="mx-auto max-w-5xl px-6 text-center">
+          <h2 className="mx-auto max-w-2xl text-2xl font-semibold leading-snug tracking-tight sm:text-3xl">
+            Thousands of product and brand teams use{" "}
+            <span className="brand-text">Translume</span> to ignite collaboration
+          </h2>
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-x-12 gap-y-6 opacity-55">
+            {["Northwind", "Quanta", "Lumen", "Vertex", "Helio", "Atlas"].map((name) => (
+              <span
+                key={name}
+                className="text-xl font-bold tracking-tight text-[var(--text-dim)] sm:text-2xl"
+              >
+                {name}
+              </span>
+            ))}
+          </div>
+          <p className="mt-7 text-xs text-[var(--text-faint)]">Sample brands shown.</p>
         </div>
       </section>
 
