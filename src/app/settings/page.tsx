@@ -25,17 +25,13 @@ import {
 import {
   IconLogout,
   IconBell,
-  IconCalendar,
   IconUsers,
-  IconKeyboard,
-  IconPuzzle,
   IconMail,
   IconLink,
   IconCheck,
   IconScreen,
   IconCamera,
   IconBoth,
-  IconRecord,
   IconTrash,
 } from "@/components/icons";
 
@@ -47,13 +43,13 @@ type Tab =
   | "quick"
   | "shortcuts";
 
-const TABS: { key: Tab; label: string; icon: typeof IconBell }[] = [
-  { key: "account", label: "My account", icon: IconUsers },
-  { key: "meetings", label: "Meeting recordings", icon: IconCalendar },
-  { key: "notifications", label: "Push notifications", icon: IconBell },
-  { key: "integrations", label: "Integrations", icon: IconPuzzle },
-  { key: "quick", label: "Quick record", icon: IconRecord },
-  { key: "shortcuts", label: "Keyboard shortcuts", icon: IconKeyboard },
+const TABS: { key: Tab; label: string }[] = [
+  { key: "account", label: "My account" },
+  { key: "meetings", label: "Meeting recordings" },
+  { key: "notifications", label: "Push notifications" },
+  { key: "integrations", label: "Integrations" },
+  { key: "quick", label: "Quick record" },
+  { key: "shortcuts", label: "Keyboard shortcuts" },
 ];
 
 export default function SettingsPage() {
@@ -71,28 +67,26 @@ export default function SettingsPage() {
 
   return (
     <AppShell>
-      <div className="mx-auto max-w-3xl px-5 py-8 sm:px-8">
+      <div className="mx-auto max-w-4xl px-5 py-8 sm:px-8">
         <h1 className="text-2xl font-semibold tracking-tight">Personal Settings</h1>
         <p className="mt-1 text-sm text-[var(--text-dim)]">
           Manage your account, notifications, and integrations.
         </p>
 
         {/* Tabs */}
-        <div className="no-scrollbar mt-6 flex gap-1 overflow-x-auto border-b border-[var(--border)] pb-px">
+        <div className="mt-6 flex flex-wrap gap-x-1 border-b border-[var(--border)] pb-px">
           {TABS.map((t) => {
-            const Icon = t.icon;
             const active = tab === t.key;
             return (
               <button
                 key={t.key}
                 onClick={() => setTab(t.key)}
-                className={`flex shrink-0 items-center gap-2 whitespace-nowrap border-b-2 px-3 py-2.5 text-sm font-medium transition ${
+                className={`whitespace-nowrap border-b-2 px-3 py-2.5 text-sm font-medium transition ${
                   active
                     ? "border-[var(--brand)] text-[var(--text)]"
                     : "border-transparent text-[var(--text-dim)] hover:text-[var(--text)]"
                 }`}
               >
-                <Icon width={16} height={16} />
                 {t.label}
               </button>
             );
