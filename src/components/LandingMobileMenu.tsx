@@ -44,8 +44,21 @@ export function LandingMobileMenu() {
               </button>
             </div>
 
-            <Link href="/record" onClick={close} className={linkCls}>Apps</Link>
-            <Link href="/#features" onClick={close} className={linkCls}>Solutions</Link>
+            <div className="px-3 pb-1 text-[11px] font-semibold uppercase tracking-wide text-[var(--text-faint)]">
+              Apps
+            </div>
+            <Link href="/record" onClick={close} className={linkCls}>Translume</Link>
+            <a
+              href="https://cadence-ovxh.vercel.app/"
+              target="_blank"
+              rel="noreferrer"
+              onClick={close}
+              className={linkCls}
+            >
+              Cadence
+            </a>
+
+            <Link href="/#features" onClick={close} className={`${linkCls} mt-1`}>Solutions</Link>
 
             <div className="mt-2 px-3 pb-1 text-[11px] font-semibold uppercase tracking-wide text-[var(--text-faint)]">
               Resources
