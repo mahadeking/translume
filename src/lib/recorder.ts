@@ -10,12 +10,17 @@ export interface RecorderOptions {
 }
 
 function pickMimeType(): string {
+  // Prefer MP4 (H.264/AAC) where the browser can record it — Chrome, Edge, and
+  // Safari can — so downloads are universally playable. Fall back to WebM
+  // (Firefox and older browsers) so recording always works.
   const candidates = [
+    "video/mp4;codecs=avc1.42E01E,mp4a.40.2",
+    "video/mp4;codecs=avc1,mp4a",
+    "video/mp4",
     "video/webm;codecs=vp9,opus",
     "video/webm;codecs=vp8,opus",
     "video/webm;codecs=h264,opus",
     "video/webm",
-    "video/mp4",
   ];
   for (const c of candidates) {
     if (typeof MediaRecorder !== "undefined" && MediaRecorder.isTypeSupported(c)) {

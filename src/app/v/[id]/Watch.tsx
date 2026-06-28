@@ -456,6 +456,7 @@ export function Watch({ id }: { id: string }) {
         title={rec.title}
         downloadUrl={url}
         allowDownload={rec.allowDownload !== false || isOwner}
+        mimeType={rec.mimeType}
       />
 
       <div className="mx-auto grid max-w-7xl gap-6 px-5 pb-12 sm:px-8 lg:grid-cols-[1fr_360px]">

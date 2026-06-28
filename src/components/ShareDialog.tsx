@@ -10,6 +10,7 @@ export function ShareDialog({
   title,
   downloadUrl,
   allowDownload = true,
+  mimeType = "video/webm",
 }: {
   open: boolean;
   onClose: () => void;
@@ -17,6 +18,7 @@ export function ShareDialog({
   title: string;
   downloadUrl: string | null;
   allowDownload?: boolean;
+  mimeType?: string;
 }) {
   const [origin, setOrigin] = useState("");
   const [copied, setCopied] = useState<"link" | "embed" | null>(null);
@@ -38,6 +40,16 @@ export function ShareDialog({
 
   const link = `${origin}/v/${recId}`;
   const embed = `<iframe src="${origin}/embed/${recId}" width="640" height="360" style="border:0;border-radius:12px" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
+
+  // Save with the real container extension (mp4 when recorded as MP4, else webm).
+  const ext = mimeType.includes("mp4") ? "mp4" : "webm";
+  const fileName = `${title.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "") || "translume"}.${ext}`;
+  // For cross-origin (cloud) URLs, ask the server to force a download with this
+  // name via the ?download param; the local blob URL uses the download attr.
+  const href =
+    downloadUrl && /^https?:/i.test(downloadUrl)
+      ? `${downloadUrl}${downloadUrl.includes("?") ? "&" : "?"}download=${encodeURIComponent(fileName)}`
+      : downloadUrl;
 
   function copy(text: string, which: "link" | "embed") {
     navigator.clipboard.writeText(text).then(() => {
@@ -91,14 +103,14 @@ export function ShareDialog({
         </button>
 
         <div className="mt-5 flex items-center justify-between border-t border-[var(--border)] pt-4">
-          {downloadUrl && allowDownload ? (
+          {href && allowDownload ? (
             <a
-              href={downloadUrl}
-              download={`${title.replace(/[^a-z0-9]+/gi, "-")}.webm`}
+              href={href}
+              download={fileName}
               className="btn btn-ghost px-4 py-2 text-sm"
             >
               <IconDownload width={16} height={16} />
-              Download
+              Download {ext.toUpperCase()}
             </a>
           ) : (
             <span />
