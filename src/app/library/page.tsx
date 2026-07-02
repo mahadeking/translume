@@ -113,7 +113,8 @@ export default function LibraryPage() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search recordings"
-                className="input w-56 pl-9"
+                className="input w-56"
+                style={{ paddingLeft: "2.5rem" }}
               />
             </div>
             <Link href="/record" className="btn btn-primary">
