@@ -195,8 +195,9 @@ export default function LoginPage() {
         </div>
 
         <p className="mt-5 text-center text-xs text-[var(--text-faint)]">
-          By continuing you agree to the{" "}
-          <span className="underline">terms</span>.
+          By continuing you agree to our{" "}
+          <a href="/terms" className="underline">Terms</a> and{" "}
+          <a href="/privacy" className="underline">Privacy Policy</a>.
         </p>
       </div>
     </div>

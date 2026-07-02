@@ -59,6 +59,7 @@ export function LandingMobileMenu() {
             </a>
 
             <Link href="/#features" onClick={close} className={`${linkCls} mt-1`}>Solutions</Link>
+            <Link href="/pricing" onClick={close} className={linkCls}>Pricing</Link>
 
             <div className="mt-2 px-3 pb-1 text-[11px] font-semibold uppercase tracking-wide text-[var(--text-faint)]">
               Resources

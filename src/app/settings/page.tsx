@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AppShell } from "@/components/AppShell";
 import { useAuth } from "@/lib/useAuth";
@@ -274,6 +275,21 @@ function AccountTab({
         <div className="mt-4 border-t border-[var(--border)] pt-4">
           <div className="text-xs font-medium text-[var(--text-dim)]">Email address</div>
           <div className="mt-1 text-sm">{email}</div>
+        </div>
+      </div>
+
+      {/* Plan / billing */}
+      <div className="card p-5">
+        <div className="flex items-center justify-between gap-3">
+          <div className="min-w-0">
+            <h2 className="text-sm font-semibold">Plan</h2>
+            <p className="mt-1 text-sm text-[var(--text-dim)]">
+              You&apos;re on the <span className="font-medium text-[var(--text)]">Free</span> plan.
+            </p>
+          </div>
+          <Link href="/pricing" className="btn btn-primary shrink-0">
+            Upgrade
+          </Link>
         </div>
       </div>
 

@@ -102,6 +102,12 @@ export function LandingNav() {
       >
         Solutions
       </Link>
+      <Link
+        href="/pricing"
+        className="rounded-lg px-3 py-2 text-[var(--text-dim)] transition hover:text-[var(--text)]"
+      >
+        Pricing
+      </Link>
       <Dropdown name="Resources" items={RESOURCES} width="w-56" />
     </nav>
   );

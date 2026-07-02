@@ -260,7 +260,11 @@ export default function Home() {
       <footer className="border-t border-[var(--border)] py-8">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 px-6 text-center text-sm text-[var(--text-faint)] sm:flex-row sm:text-left">
           <Logo />
-          <span>Built as a modern take on async video messaging.</span>
+          <div className="flex items-center gap-4">
+            <Link href="/pricing" className="transition hover:text-[var(--text)]">Pricing</Link>
+            <Link href="/terms" className="transition hover:text-[var(--text)]">Terms</Link>
+            <Link href="/privacy" className="transition hover:text-[var(--text)]">Privacy</Link>
+          </div>
         </div>
       </footer>
     </div>
