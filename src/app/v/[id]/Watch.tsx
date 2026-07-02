@@ -57,6 +57,12 @@ export function Watch({ id }: { id: string }) {
   const [comments, setComments] = useState<Comment[]>([]);
   const [loading, setLoading] = useState(true);
   const [playhead, setPlayhead] = useState(0);
+  const [tsCopied, setTsCopied] = useState(false);
+  const [startAt] = useState<number>(() => {
+    if (typeof window === "undefined") return 0;
+    const n = parseInt(new URLSearchParams(window.location.search).get("t") || "0", 10);
+    return Number.isFinite(n) && n > 0 ? n : 0;
+  });
   const [isOwner, setIsOwner] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [myWorkspaceId, setMyWorkspaceId] = useState<string | null>(null);
@@ -224,6 +230,17 @@ export function Watch({ id }: { id: string }) {
 
   function trackCta() {
     if (rec) incrementCtaClicks(rec.id).catch(() => {});
+  }
+
+  function copyAtTime() {
+    if (!rec) return;
+    const t = Math.floor(playerRef.current?.getCurrentTime() ?? playhead);
+    navigator.clipboard
+      .writeText(`${window.location.origin}/v/${rec.id}?t=${t}`)
+      .then(() => {
+        setTsCopied(true);
+        setTimeout(() => setTsCopied(false), 1500);
+      });
   }
 
   async function unlock() {
@@ -472,6 +489,8 @@ export function Watch({ id }: { id: string }) {
                 : undefined
             }
             markers={comments.map((c) => ({ id: c.id, time: c.time, emoji: c.emoji }))}
+            chapters={ai?.chapters ?? []}
+            startAt={startAt}
             onTimeUpdate={setPlayhead}
             onMarkerClick={() => {}}
           />
@@ -520,6 +539,12 @@ export function Watch({ id }: { id: string }) {
                   CC
                 </button>
               )}
+              <button
+                onClick={copyAtTime}
+                className="chip transition hover:border-[var(--brand)] hover:text-[var(--brand)]"
+              >
+                {tsCopied ? "✓ Copied" : `Copy link at ${formatDuration(playhead)}`}
+              </button>
               {isOwner && myWorkspaceId && (
                 <button
                   onClick={toggleTeam}

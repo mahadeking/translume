@@ -26,8 +26,12 @@ interface PlayerProps {
   src: string;
   poster?: string;
   markers?: Marker[];
+  /** AI chapter markers shown as ticks on the timeline. */
+  chapters?: { time: number; title: string }[];
   /** Non-destructive trim: play only this range. */
   clip?: { start: number; end: number };
+  /** Start playback at this time (e.g. from a ?t= deep link). */
+  startAt?: number;
   onTimeUpdate?: (t: number) => void;
   onMarkerClick?: (id: string) => void;
 }
@@ -35,7 +39,7 @@ interface PlayerProps {
 const SPEEDS = [1, 1.25, 1.5, 2];
 
 export const Player = forwardRef<PlayerHandle, PlayerProps>(function Player(
-  { src, poster, markers = [], clip, onTimeUpdate, onMarkerClick },
+  { src, poster, markers = [], chapters = [], clip, startAt, onTimeUpdate, onMarkerClick },
   ref
 ) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -127,7 +131,11 @@ export const Player = forwardRef<PlayerHandle, PlayerProps>(function Player(
         onLoadedMetadata={(e) => {
           const d = e.currentTarget.duration;
           if (Number.isFinite(d)) setDuration(d);
-          if (clipStart > 0) e.currentTarget.currentTime = clipStart;
+          const target =
+            startAt && startAt > clipStart
+              ? Math.min(startAt, Number.isFinite(d) ? d : startAt)
+              : clipStart;
+          if (target > 0) e.currentTarget.currentTime = target;
           setReady(true);
         }}
         onDurationChange={(e) => {
@@ -201,6 +209,25 @@ export const Player = forwardRef<PlayerHandle, PlayerProps>(function Player(
                   >
                     {m.emoji ?? "💬"}
                   </button>
+                );
+              })}
+            {/* AI chapter ticks */}
+            {chapters
+              .filter((c) => c.time > clipStart + 0.5 && c.time <= clipEnd)
+              .map((c, i) => {
+                const left = ((c.time - clipStart) / span) * 100;
+                return (
+                  <button
+                    key={`ch-${i}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (videoRef.current)
+                        videoRef.current.currentTime = clampToClip(c.time);
+                    }}
+                    title={`${formatDuration(c.time - clipStart)} · ${c.title}`}
+                    className="absolute top-1/2 h-3.5 w-[3px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/85 transition hover:h-4 hover:bg-white"
+                    style={{ left: `${left}%` }}
+                  />
                 );
               })}
           </div>

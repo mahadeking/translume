@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import type { Folder, Recording } from "@/lib/types";
 import { formatDuration, formatRelativeDate } from "@/lib/format";
+import { getObjectURL } from "@/lib/store";
 import {
   IconPlay,
   IconEye,
@@ -46,6 +47,46 @@ export function VideoCard({
   const [menuOpen, setMenuOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
+
+  // Hover-to-preview: on hover-capable devices, silently play the video over
+  // the thumbnail. The URL is fetched lazily on first hover.
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [showPreview, setShowPreview] = useState(false);
+  const canHover = useRef(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
+  useEffect(() => {
+    canHover.current =
+      typeof window !== "undefined" && window.matchMedia("(hover: hover)").matches;
+  }, []);
+
+  async function onEnter() {
+    if (!canHover.current) return;
+    setShowPreview(true);
+    if (!previewUrl) {
+      try {
+        const u = await getObjectURL(rec.id);
+        if (u) setPreviewUrl(u);
+      } catch {
+        /* ignore */
+      }
+    } else {
+      videoRef.current?.play().catch(() => {});
+    }
+  }
+
+  function onLeave() {
+    setShowPreview(false);
+    const v = videoRef.current;
+    if (v) {
+      v.pause();
+      try {
+        v.currentTime = rec.trimStart ?? 0;
+      } catch {
+        /* ignore */
+      }
+    }
+  }
 
   useEffect(() => {
     if (!menuOpen) return;
@@ -99,6 +140,8 @@ export function VideoCard({
       )}
       <Link
         href={`/v/${rec.id}`}
+        onMouseEnter={onEnter}
+        onMouseLeave={onLeave}
         className="relative block aspect-video overflow-hidden rounded-t-[15px] bg-black/40"
       >
         {rec.thumbnail ? (
@@ -110,7 +153,29 @@ export function VideoCard({
           </div>
         )}
 
-        <div className="absolute inset-0 grid place-items-center bg-black/30 opacity-0 transition group-hover:opacity-100">
+        {previewUrl && (
+          // eslint-disable-next-line jsx-a11y/media-has-caption
+          <video
+            ref={videoRef}
+            src={previewUrl}
+            muted
+            loop
+            playsInline
+            autoPlay
+            onLoadedMetadata={(e) => {
+              if (rec.trimStart) e.currentTarget.currentTime = rec.trimStart;
+            }}
+            className={`pointer-events-none absolute inset-0 h-full w-full object-cover transition-opacity duration-200 ${
+              showPreview ? "opacity-100" : "opacity-0"
+            }`}
+          />
+        )}
+
+        <div
+          className={`absolute inset-0 grid place-items-center bg-black/30 opacity-0 transition ${
+            showPreview ? "" : "group-hover:opacity-100"
+          }`}
+        >
           <span className="grid h-14 w-14 place-items-center rounded-full brand-gradient shadow-lg">
             <IconPlay width={24} height={24} className="text-white" />
           </span>
